@@ -31,6 +31,16 @@ style_mono_accent(
   header_h1_font_size = "3rem",
   header_h2_font_size = "2.5rem",
   header_h3_font_size = "2rem",
+  text_slide_number_color = "#1c5253",
+  text_slide_number_font_size = "0.9em",
+  padding = "6px 36px 6px 36px",
+  extra_css = list(
+    ".remark-slide-content h1" = list("margin-bottom" = "0.3em"),
+    ".pull-left"  = list(width = "49%"),
+    ".pull-right" = list(width = "49%"),
+    ".col-text" = list(float = "left",  width = "30%"),
+    ".col-img"  = list(float = "right", width = "68%"),
+    ".col-img ~ *" = list(clear = "both"))
 )
 ```
 
@@ -40,37 +50,42 @@ library(flipbookr)
 library(tidyverse)
 library(icons) #https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
 ```
-# How can R data processing help us minimize mistakes?
 
-<!-- .center[<img src="types-of-errors.png" width="700">] -->
+class: inverse, center, middle
+# How does R data processing help to minimize mistakes?
 
 ---
 # How can R data processing help us minimize mistakes?
 - Code *is* documentation
-- Transform data with less human intervention
+- Transform data with less human intervention (e.g., `read_tsv()` in the homework)
 - But coding errors are also common...what can we do to make sure that our code works?
   * Write code that's reproducible (avoiding absolute file paths)
   * Use code to help clean up variable names to make them human-readable
   * Instead of “hard” coding based on position (such as ds[1, 2]), filter and select by name and logical conditions
   * Reduce code duplication (copy-paste-tweak) with loops and functions
-
+  
 ---
 # Data type and transformation tutorial
 
-- Data types
+- Data types and classes in R
 
 - Logical statements
 
 - Introduction to *dplyr*
 
-<br />
+- Code style
+
 <br />
  
 .content-box-blue[
 `r icons::fontawesome("github")` Follow along from the [Github repo](https://github.com/psych-259-data-science-2026/3-data-transformations)
 ]
-
+<br />
 .footnote[.small[.bold[Last updated: `r Sys.Date()`]]]
+
+---
+class: inverse, center, middle
+# Part 1: Data Types and Classes
 
 ---
 # Data types and classes
@@ -142,39 +157,21 @@ paste0(x, ", World")
 
 - `paste0(1, 2)` returns `"12"`
 
-- What does `as.numeric(paste0(1,2))` return?
+- What happens if we evaluate `as.numeric(paste0(1,2))`?
+
+- What happens if we evaluate `TRUE + TRUE`?
 
 ---
-`r chunk_reveal("missing", break_type = "auto", widths = c(2, 1))`
-
-```{r missing, include = FALSE}
-x <-  c(1, 2, 3, NA)
-print(x)
-is.na(x)
-mean(x)
-mean(x, na.rm = TRUE)
-
-x <- c(1, 2, 3, NULL)
-x
-```
----
-# Logical comparisons 
+# Built-in logical comparison functions
 
 - Comparisons between values that result in TRUE/FALSE
-
-- Greater than/less than (>, >=, <, <=)
-
-- Equals (==)
-
-- Not equals (!=)
-
-- Not (!)
-
-- And (&)
-
-- Or (|)
-
-- %in%
+  * Greater than/less than (>, >=, <, <=)
+  * Equals (==)
+  * Not equals (!=)
+  * Not (!)
+  * And (&)
+  * Or (|)
+  * %in%
 
 ---
 `r chunk_reveal("logical", break_type = "auto", widths = c(2, 1), title = "# Logical comparisons")`
@@ -215,6 +212,10 @@ ifelse(NA %in% x, "x contains a missing value", "x does not contain a missing va
 ```
 
 ---
+class: inverse, center, middle
+# Part 2: Data transformation with the dplyr package
+
+---
 # Data transformation with the dplyr package
 
 - A toolbox for common data processing/manipulation operations to apply to tibbles
@@ -232,11 +233,13 @@ ifelse(NA %in% x, "x contains a missing value", "x does not contain a missing va
 # Each dplyr function uses a similar structure
 - `function(data, something_to_do_with_columns)`
 
-- In base R, you often need to specify the dataset over and over to access the columns: `ds[ds$col1 == 1, 0]`
+- In base R, you need to specify the dataset over and over to subset: `ds[ds$col1 == 1, 0]`
 
-- In dplyr functions, the data argument lets you work with column names without ever using `$`. The data argument also lets you access the columns directly without using quoted expressions: `filter(data, col1 == 1)`
+- In dplyr functions, the data argument lets you work with column names without using `$`. The data argument also lets you access the columns directly without using quoted expressions: `filter(data, col1 == 1)`
 
 - Most dplyr functions return the entire tibble back as an output
+
+- Read help pages (e.g., `?filter`) to understand what arguments each function accepts and what each function returns
 
 ---
 `r chunk_reveal("arrange", break_type = "rotate", float = "none", widths = c(5, 1), title = "## Arrange (sorting data)")`
@@ -291,6 +294,25 @@ select(ds, where(is.character)) #ROTATE
 ```
 
 ---
+`r chunk_reveal("select_bad_names", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Select needs good column names")`
+
+```{r select_bad_names, include = FALSE}
+bad_names <- tibble(id = 1, depression_1 = 1:5, dep2 = 1:5, DEP3 = 1:5, depressed = T)
+select(bad_names, starts_with("dep")) #ROTATE
+select(bad_names, starts_with("dep") & !matches("depressed")) #ROTATE
+
+```
+---
+`r chunk_reveal("select_good_names", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Select needs good column names")`
+
+```{r select_good_names, include = FALSE}
+good_names <- tibble(id = 1, dep_1 = 1:5, dep_2 = 1:5, dep_3 = 1:5, is_depressed = T)
+select(good_names, starts_with("dep")) #ROTATE
+select(good_names, matches("_[0-9]")) #ROTATE
+select(good_names, num_range(prefix = "dep_", range = 1:3)) #ROTATE
+```
+
+---
 `r chunk_reveal("noassignment", break_type = "auto", widths = c(1, 1), title = "# What's going on here?")`
 
 ```{r noassignment, include = FALSE}
@@ -333,7 +355,7 @@ ds <- ds %>%
 ```
 
 ---
-# This is not the most intuitive thing at first
+# Assigning the result of a piped expression
 
 All the options below are equivalent, but I stick with `ds <- ds %>%` because it's the most common to see
 
@@ -349,10 +371,6 @@ ds <- slice_tail(select(ds, height), n = 5)
 
 ---
 # Rename
-
-- Consistent and clear names help prevent errors
-  * Avoid names like "dv1", "dv2" that are difficult to remember
-  * Auto-complete within RStudio means that you don't usually need to type out longer names
 
 - Using rename can help clean up messy names from other sources
   * Avoid names that contain spaces or start with numbers
@@ -372,7 +390,7 @@ iris %>% rename(sepal_length = Sepal.Length, sepal_width = Sepal.Width, petal_le
 iris %>% rename_with(toupper) #ROTATE
 iris %>% rename_with(tolower, starts_with("Petal")) #ROTATE
 iris %>% clean_names() #ROTATE
-iris %>% clean_names("small_camel") #ROTATE
+iris %>% clean_names("lower_camel") #ROTATE
 ```
 ---
 # Mutate and summarize
