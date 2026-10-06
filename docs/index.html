@@ -1425,11 +1425,11 @@ class: inverse, center, middle
 - A toolbox for common data processing/manipulation operations to apply to tibbles
   * `glimpse()` to see the structure of a tibble
   * `arrange()` to sort data by columns
-  * `filter()` and `slice()` to subset data by rows
+  * `filter()`, `filter_out()` and `slice()` to subset data by rows
   * `select()` to subset data by columns
   * `rename()` to rename columns
   * `mutate()` to add or change columns (or their values)
-  * `summarize()` and `count()` to calculate summary statistics over rows of data
+  * `summarize()` to calculate summary statistics over rows of data
   * `group_by()` to perform operations within subsets of data
   * and many more...
 
@@ -1977,8 +1977,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Finis Va…    170    NA blond      fair       blue              91 male  mascu…
-2 Ki-Adi-M…    198    82 white      pale       yellow            92 male  mascu…
+1 Jar Jar …    196    66 none       orange     orange            52 male  mascu…
+2 Bail Pre…    191    NA black      tan        brown             67 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -2001,8 +2001,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Rugor Na…    206    NA none       green      orange            NA male  mascu…
-2 Biggs Da…    183    84 black      light      brown             24 male  mascu…
+1 Biggs Da…    183    84 black      light      brown             24 male  mascu…
+2 Ackbar       180    83 none       brown mot… orange            41 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -5134,8 +5134,7 @@ ds &lt;- ds %&gt;% mutate(height_m = height/100,
 
 ds &lt;- ds %&gt;%
   filter(hair_color %in% c("blond", NA)) %&gt;%
-* mutate(hair_color = ifelse(is.na(hair_color),"no hair", hair_color),
-*        mass = ifelse(mass &gt; 1000, "huge", "not huge"))
+* mutate(hair_color = ifelse(is.na(hair_color),"no hair", hair_color))
 
 ds
 ```
@@ -5145,16 +5144,16 @@ ds
 
 ```
 # A tibble: 8 × 7
-  in_movie name                  mass     height height_m   bmi hair_color
-  &lt;lgl&gt;    &lt;chr&gt;                 &lt;chr&gt;     &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     
-1 TRUE     Jabba Desilijic Tiure huge        175     1.75   443 no hair   
-2 TRUE     R2-D2                 not huge     96     0.96    35 no hair   
-3 TRUE     R5-D4                 not huge     97     0.97    34 no hair   
-4 TRUE     C-3PO                 not huge    167     1.67    27 no hair   
-5 TRUE     Luke Skywalker        not huge    172     1.72    26 blond     
-6 TRUE     Greedo                not huge    173     1.73    25 no hair   
-7 TRUE     Anakin Skywalker      not huge    188     1.88    24 blond     
-8 TRUE     Finis Valorum         &lt;NA&gt;        170     1.7     NA blond     
+  in_movie name                   mass height height_m   bmi hair_color
+  &lt;lgl&gt;    &lt;chr&gt;                 &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     
+1 TRUE     Jabba Desilijic Tiure  1358    175     1.75   443 no hair   
+2 TRUE     R2-D2                    32     96     0.96    35 no hair   
+3 TRUE     R5-D4                    32     97     0.97    34 no hair   
+4 TRUE     C-3PO                    75    167     1.67    27 no hair   
+5 TRUE     Luke Skywalker           77    172     1.72    26 blond     
+6 TRUE     Greedo                   74    173     1.73    25 no hair   
+7 TRUE     Anakin Skywalker         84    188     1.88    24 blond     
+8 TRUE     Finis Valorum            NA    170     1.7     NA blond     
 ```
 ]
 
@@ -5194,11 +5193,32 @@ ds
 
 
 ``` r
-# Change all NA values to "no hair", keep all others the same
-ds &lt;- ds %&gt;% mutate(hair_color = ifelse(is.na(hair_color),"no hair", hair_color))
+ds &lt;- starwars %&gt;% select(name, height, hair_color)
+
+# Alternate: Change all NA values to "no hair", keep all others the same
+ds &lt;- ds %&gt;% mutate(hair_color = replace_values(hair_color, NA ~ "no hair"))
 
 # Set all heights greater than 100 to 100, keep all others the same
 ds &lt;- ds %&gt;% mutate(height = ifelse(height &gt; 100,100, height))
+
+ds
+```
+
+```
+# A tibble: 87 × 3
+   name               height hair_color   
+   &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;        
+ 1 Luke Skywalker        100 blond        
+ 2 C-3PO                 100 no hair      
+ 3 R2-D2                  96 no hair      
+ 4 Darth Vader           100 none         
+ 5 Leia Organa           100 brown        
+ 6 Owen Lars             100 brown, grey  
+ 7 Beru Whitesun Lars    100 brown        
+ 8 R5-D4                  97 no hair      
+ 9 Biggs Darklighter     100 black        
+10 Obi-Wan Kenobi        100 auburn, white
+# ℹ 77 more rows
 ```
 
 ---
@@ -5809,7 +5829,7 @@ iris %&gt;% clean_names() %&gt;%
 3 virgini…              6.59             2.97              5.55             5.55
 ```
 ---
-# Instead, use `across`
+# Instead, use across()
 
 
 ``` r
@@ -5827,7 +5847,7 @@ iris %&gt;% clean_names() %&gt;%
 3 virgini…              6.59             2.97              5.55            2.03 
 ```
 ---
-# Instead, use `across`
+# Instead, use across()
 
 
 ``` r

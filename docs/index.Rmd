@@ -221,11 +221,11 @@ class: inverse, center, middle
 - A toolbox for common data processing/manipulation operations to apply to tibbles
   * `glimpse()` to see the structure of a tibble
   * `arrange()` to sort data by columns
-  * `filter()` and `slice()` to subset data by rows
+  * `filter()`, `filter_out()` and `slice()` to subset data by rows
   * `select()` to subset data by columns
   * `rename()` to rename columns
   * `mutate()` to add or change columns (or their values)
-  * `summarize()` and `count()` to calculate summary statistics over rows of data
+  * `summarize()` to calculate summary statistics over rows of data
   * `group_by()` to perform operations within subsets of data
   * and many more...
 
@@ -438,19 +438,22 @@ ds <- ds %>% mutate(height_m = height/100,
 
 ds <- ds %>% 
   filter(hair_color %in% c("blond", NA)) %>% 
-  mutate(hair_color = ifelse(is.na(hair_color),"no hair", hair_color),
-         mass = ifelse(mass > 1000, "huge", "not huge"))
+  mutate(hair_color = ifelse(is.na(hair_color),"no hair", hair_color))
 ```
 
 ---
 # Common task: Changing some but not all values within a column
 
 ```{r}
-# Change all NA values to "no hair", keep all others the same
-ds <- ds %>% mutate(hair_color = ifelse(is.na(hair_color),"no hair", hair_color))
+ds <- starwars %>% select(name, height, hair_color)
+
+# Alternate: Change all NA values to "no hair", keep all others the same
+ds <- ds %>% mutate(hair_color = replace_values(hair_color, NA ~ "no hair"))
 
 # Set all heights greater than 100 to 100, keep all others the same
 ds <- ds %>% mutate(height = ifelse(height > 100,100, height))
+
+ds
 ```
 
 ---
