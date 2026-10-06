@@ -52,13 +52,13 @@ class: inverse, center, middle
 ---
 # Data type and transformation tutorial
 
-- Data types and classes in R
+- Part 1:
+  * Data types and classes in R
+  * Logical statements
 
-- Logical statements
+- Part 2: Introduction to *dplyr*
 
-- Introduction to *dplyr*
-
-- Code style
+- Part 3: Code style
 
 &lt;br /&gt;
  
@@ -70,7 +70,7 @@ class: inverse, center, middle
 
 ---
 class: inverse, center, middle
-# Part 1: Data Types and Classes
+# Part 1: Data Types and Classes; Logical Comparisons
 
 ---
 # Data types and classes
@@ -1977,7 +1977,7 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Jar Jar …    196    66 none       orange     orange            52 male  mascu…
+1 Beru Whi…    165    75 brown      light      blue              47 fema… femin…
 2 Bail Pre…    191    NA black      tan        brown             67 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
@@ -2001,8 +2001,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Biggs Da…    183    84 black      light      brown             24 male  mascu…
-2 Ackbar       180    83 none       brown mot… orange            41 male  mascu…
+1 Poe Dame…     NA    NA brown      light      brown             NA male  mascu…
+2 Cordé        157    NA brown      light      brown             NA &lt;NA&gt;  &lt;NA&gt;  
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -5865,6 +5865,83 @@ iris %&gt;% clean_names() %&gt;%
 3 virginica               6.59           0.636              5.55           0.552
 ```
 
+---
+class: inverse, center, middle
+# Part 3: Code style
+
+---
+# Who cares what your code looks like?
+
+- Code that is machine readable might not be human readable
+
+- Human readable code:
+  * Helps with code-as-documentation
+  * Makes it easier for you to find mistakes
+  * Helps with later internal/external code sharing
+
+- Some of my style choices are to make content fit on slides
+
+---
+# Spaces
+
+
+``` r
+# Strive for
+z &lt;- (a + b)^2 / d
+
+# Avoid
+z&lt;-( a + b ) ^ 2/d
+
+# Strive for
+mean(x, na.rm = TRUE)
+
+# Avoid
+mean (x ,na.rm=TRUE)
+```
+
+---
+# Pipes
+
+
+``` r
+# Strive for 
+flights %&gt;%   
+  filter(!is.na(arr_delay), !is.na(tailnum)) %&gt;%  
+  count(dest)
+
+# Avoid
+flights%&gt;%filter(!is.na(arr_delay), !is.na(tailnum))%&gt;%count(dest)
+```
+
+---
+# Spacing helps group arguments within functions
+
+``` r
+# Strive for 
+flights %&gt;%   
+  group_by(tailnum) %&gt;% 
+  summarize(
+    delay = mean(arr_delay, na.rm = TRUE),
+    n = n()
+  )
+
+# Avoid (lacks visual cue for what is part of summarize)
+flights%&gt;%
+  group_by(tailnum) %&gt;% 
+  summarize(
+  delay = mean(arr_delay, na.rm = TRUE), 
+  n = n()
+  )
+```
+
+---
+# Use the styler
+
+- `install.packages("styler")
+
+- Access from addins to style a selection of code or an entire file
+
+- Might need to restart RStudio before using
 
 ---
 # Data transformation homework assignment
