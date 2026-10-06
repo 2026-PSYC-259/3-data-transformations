@@ -1851,6 +1851,34 @@ count: false
 
 
 
+---
+# Why not subset based on position?
+
+``` r
+filter(starwars, name == "Darth Vader")
+```
+
+```
+# A tibble: 1 × 14
+  name      height  mass hair_color skin_color eye_color birth_year sex   gender
+  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+1 Darth Va…    202   136 none       white      yellow          41.9 male  mascu…
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+
+``` r
+starwars[4,]
+```
+
+```
+# A tibble: 1 × 14
+  name      height  mass hair_color skin_color eye_color birth_year sex   gender
+  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+1 Darth Va…    202   136 none       white      yellow          41.9 male  mascu…
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;
+```
 
 ---
 count: false
@@ -1949,8 +1977,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Jek Tono…    180   110 brown      fair       blue              NA &lt;NA&gt;  &lt;NA&gt;  
-2 Owen Lars    178   120 brown, gr… light      blue              52 male  mascu…
+1 Nien Nunb    160    68 none       grey       black             NA male  mascu…
+2 Tarfful      234   136 brown      brown      blue              NA male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -1973,8 +2001,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Obi-Wan …    182    77 auburn, w… fair       blue-gray         57 male  mascu…
-2 Finis Va…    170    NA blond      fair       blue              91 male  mascu…
+1 Wilhuff …    180    NA auburn, g… fair       blue              64 male  mascu…
+2 Qui-Gon …    193    89 brown      fair       blue              92 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -2427,7 +2455,6 @@ bad_names &lt;- tibble(id = 1, depression_1 = 1:5, dep2 = 1:5, DEP3 = 1:5, depre
 
 
 
-
 ---
 count: false
  
@@ -2532,7 +2559,6 @@ good_names &lt;- tibble(id = 1, dep_1 = 1:5, dep_2 = 1:5, dep_3 = 1:5, is_depres
   font-size: 80%
 }
 &lt;/style&gt;
-
 
 
 

@@ -265,6 +265,12 @@ filter(ds, height > 100, height < 150) #ROTATE
 filter(ds, eye_color %in% c("blue","brown")) #ROTATE
 filter(ds, !(eye_color %in% c("blue","brown"))) #ROTATE
 ```
+---
+# Why not subset based on position?
+```{r}
+filter(starwars, name == "Darth Vader")
+starwars[4,]
+```
 
 ---
 `r chunk_reveal("slice", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Slice (subsetting rows by position)")`
@@ -295,7 +301,6 @@ select(ds, where(is.character)) #ROTATE
 
 ---
 `r chunk_reveal("select_bad_names", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Select needs good column names")`
-
 ```{r select_bad_names, include = FALSE}
 bad_names <- tibble(id = 1, depression_1 = 1:5, dep2 = 1:5, DEP3 = 1:5, depressed = T)
 select(bad_names, starts_with("dep")) #ROTATE
@@ -304,7 +309,6 @@ select(bad_names, starts_with("dep") & !matches("depressed")) #ROTATE
 ```
 ---
 `r chunk_reveal("select_good_names", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Select needs good column names")`
-
 ```{r select_good_names, include = FALSE}
 good_names <- tibble(id = 1, dep_1 = 1:5, dep_2 = 1:5, dep_3 = 1:5, is_depressed = T)
 select(good_names, starts_with("dep")) #ROTATE
@@ -372,26 +376,38 @@ ds <- slice_tail(select(ds, height), n = 5)
 ---
 # Rename
 
-- Using rename can help clean up messy names from other sources
+- Using dplyr's `rename` and `rename_with` can help clean up messy names from other sources
   * Avoid names that contain spaces or start with numbers
   * Force names to use a similar format like snake_case or camelCase
 
-- Installing and loading the `janitor` package opens up some helpful renaming options
+- Installing and loading the `janitor` package opens up some helpful renaming tools
 
 ---
 `r chunk_reveal("rename", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Rename columns")`
 
 ```{r rename, include = FALSE}
-library(janitor)
 # Switching to built-in iris data set since starwars has good names
 iris #ROTATE
 iris %>% rename(sepal_length = Sepal.Length) #ROTATE
 iris %>% rename(sepal_length = Sepal.Length, sepal_width = Sepal.Width, petal_length = Petal.Length, petal_width = Petal.Width, species = Species) #ROTATE
 iris %>% rename_with(toupper) #ROTATE
 iris %>% rename_with(tolower, starts_with("Petal")) #ROTATE
-iris %>% clean_names() #ROTATE
-iris %>% clean_names("lower_camel") #ROTATE
 ```
+
+---
+`r chunk_reveal("janitor", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Rename columns")`
+
+```{r rename, include = FALSE}
+library(janitor)
+iris_ex <- iris 
+iris_ex$Site.ID = "Gaspe Peninsula"
+iris_ex #ROTATE
+iris_ex %>% clean_names() #ROTATE
+iris_ex %>% clean_names("lower_camel") #ROTATE
+iris_ex %>% clean_names("title") #ROTATE
+iris_ex %>% clean_names("title", abbreviations = c("ID")) #ROTATE
+```
+
 ---
 # Mutate and summarize
 
@@ -410,10 +426,10 @@ iris %>% clean_names("lower_camel") #ROTATE
 
 ```{r mutate, include = FALSE}
 ds <- starwars %>% select(name, mass, height, hair_color)
-ds <- ds %>% mutate(in_movie = "yes")
+ds <- ds %>% mutate(in_movie = TRUE, .before = 1)
 ds <- ds %>% mutate(height_m = height/100,
                     bmi = mass/(height_m^2),
-                    bmi = round(bmi)) %>% 
+                    bmi = round(bmi), .after = "height") %>% 
             arrange(desc(bmi))
 
 ds <- ds %>% 
@@ -423,7 +439,7 @@ ds <- ds %>%
 ```
 
 ---
-# Tricky, common task: Changing some but not all values within a column
+# Common task: Changing some but not all values within a column
 
 ```{r}
 # Change all NA values to "no hair", keep all others the same
@@ -451,6 +467,22 @@ ds %>% group_by(species) %>%
                  max_height = max(height, na.rm = T),
                  n = n())
 ```
+
+---
+# Data Transformation Homework Assignment
+
+- Use the GitHub repo link below to fork and then clone the project to your own user account and then to work locally on your own computer.
+
+- Be sure you are using R version >= 4.0 
+
+- The homework will make sure you learned what we covered, and will also ask you to try out new things to extend your knowledge
+
+- Push your answers to a public Github repo, and turn in the homework by entering the link to the repo on Canvas
+
+.content-box-blue[
+`r icons::fontawesome("github")` Homework [Github repo](https://github.com/2026-PSYC-259/3-data-transformations-hw)
+]
+
 
 <!-- adjust font size and other formatting defs in this css code chunk -->
 ```{css, eval = TRUE, echo = FALSE}
