@@ -1,7 +1,7 @@
 ---
 title: "R Data Types and Transformations with dplyr"
 subtitle: "PSYC 259: Principles of Data Science"
-author: "John Franchak"
+author: "John Franchak & Holly O'Rourke"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -42,17 +42,17 @@ library(icons) #https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
 ```
 # How can R data processing help us minimize mistakes?
 
-.center[<img src="types-of-errors.png" width="700">]
+<!-- .center[<img src="types-of-errors.png" width="700">] -->
 
 ---
 # How can R data processing help us minimize mistakes?
 - Code *is* documentation
 - Transform data with less human intervention
 - But coding errors are also common...what can we do to make sure that our code works?
-  * Instead of “hard” coding based on position (such as ds[1, 2]), filter and select by name and logical conditions
-  * Use good coding practices to clean up variable names to make them human-readable
-  * Reduce code duplication (copy-paste-tweak) with loops and functions
   * Write code that's reproducible (avoiding absolute file paths)
+  * Use code to help clean up variable names to make them human-readable
+  * Instead of “hard” coding based on position (such as ds[1, 2]), filter and select by name and logical conditions
+  * Reduce code duplication (copy-paste-tweak) with loops and functions
 
 ---
 # Data type and transformation tutorial
@@ -67,75 +67,82 @@ library(icons) #https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
 <br />
  
 .content-box-blue[
-`r icons::fontawesome("github")` Follow along from the [Github repo](https://github.com/psych-259-data-science-2022/259-data-transformations)
+`r icons::fontawesome("github")` Follow along from the [Github repo](https://github.com/psych-259-data-science-2026/3-data-transformations)
 ]
 
 .footnote[.small[.bold[Last updated: `r Sys.Date()`]]]
 
 ---
-# Data types
-- Why have pre-defined types?
-  * Allows software to efficiently store data in memory
+# Data types and classes
+- Allows language to efficiently store data in memory (*type* in R)
   * If a value is an integer (1, 2, 3, 4) storing it as an integer makes calculations easier compared to storing it as a double (2.34542480424624086)
+  * integer, double, logical, and character are R types
   
-- Allows software to implement rules about transformations
+- Allows language to follow transformation rules (*class* in R)
   * Addition/subtraction for a date follows different rules compared with integers/double
   * “Less than” makes sense when comparing numbers, but not when comparing strings
+  * The class of an object tells the language how to handle it
 
 ---
-# Common data types in R
-- Numeric
-  * integer: 1, 2, 3
-  * double: 1.12124
+# Common data types/classes in R
+- Numeric class
+  * integer type: 1, 2, 3
+  * double type: 1.12124
   
-- Character: “hello”
+- Character type/class: “hello”
 
-- Logical: T/F (TRUE/FALSE)
+- Logical type: T/F (TRUE/FALSE)
 
-- Datetime
+- Datetime class (type is double)
 
-- Factor
+- Factor class (type is integer)
 
-- Use `typeof()` function to check type of a value, `str()` or `glimpse()` to check the types of each column of a tibble
+- Use `typeof()`, `class()`, `str()`, and `glimpse()` to check the types/classes
 
 ---
 # Functions to test and convert types
 
-- Take a value and convert it into a different type
-  * `as.numeric()`, `as.character()`, `as.date()`
+- Take a value and convert it into a different class
+  * `as.numeric(x)`, `as.character(x)`, `as.date(x)`
+  * returns a typed/classed version of x
 
-- Check if something is a particular type
+- Check if something is a particular class
   * `is.numeric()`, `is.character()`
+  * returns a logical (T/F)
 
 ---
 `r chunk_reveal("types", break_type = "auto", widths = c(2, 1), title = "# Data types")`
 
 ```{r types, include = FALSE}
 x <- 1
-x
 typeof(x)
+class(x)
 is.numeric(x)
 is.character(x)
 as.character(x)
 x + 1
 
-x <- "data.csv"
+x <- "Hello"
 typeof(x)
 is.numeric(x)
 is.character(x)
 as.numeric(x)
-#"data_raw" + x
-paste0("data_raw/",x)
+#x + ", World"
+paste0(x, ", World")
 ```
 
 ---
-# Missing values
+# R tries to coerce classes/types to do what you ask
 
-- `NA` means missing data in R
+- `+` is a function in `R` (you can actually call it ` `+`(1, 2)`)
 
-- `is.na()` checks whether a value is missing
+- `"Hello" + ", World"` fails because the `+` function requires numeric arguments
 
-- not to be confused with `NULL` (empty), or `NaN` (not a number) 
+- paste0 is happy to take numeric arguments and will coerce them to character
+
+- `paste0(1, 2)` returns `"12"`
+
+- What does `as.numeric(paste0(1,2))` return?
 
 ---
 `r chunk_reveal("missing", break_type = "auto", widths = c(2, 1))`
