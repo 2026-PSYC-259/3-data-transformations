@@ -1883,7 +1883,7 @@ starwars[4,]
 ---
 count: false
  
-# Slice (subsetting rows by position)
+# Slice (other kinds of subsets)
 .panel1-slice-rotate[
 
 ``` r
@@ -1910,7 +1910,7 @@ count: false
 ---
 count: false
  
-# Slice (subsetting rows by position)
+# Slice (other kinds of subsets)
 .panel1-slice-rotate[
 
 ``` r
@@ -1937,7 +1937,7 @@ count: false
 ---
 count: false
  
-# Slice (subsetting rows by position)
+# Slice (other kinds of subsets)
 .panel1-slice-rotate[
 
 ``` r
@@ -1963,7 +1963,7 @@ count: false
 ---
 count: false
  
-# Slice (subsetting rows by position)
+# Slice (other kinds of subsets)
 .panel1-slice-rotate[
 
 ``` r
@@ -1977,8 +1977,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Nien Nunb    160    68 none       grey       black             NA male  mascu…
-2 Tarfful      234   136 brown      brown      blue              NA male  mascu…
+1 Finis Va…    170    NA blond      fair       blue              91 male  mascu…
+2 Ki-Adi-M…    198    82 white      pale       yellow            92 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -1987,7 +1987,7 @@ count: false
 ---
 count: false
  
-# Slice (subsetting rows by position)
+# Slice (other kinds of subsets)
 .panel1-slice-rotate[
 
 ``` r
@@ -2001,8 +2001,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Wilhuff …    180    NA auburn, g… fair       blue              64 male  mascu…
-2 Qui-Gon …    193    89 brown      fair       blue              92 male  mascu…
+1 Rugor Na…    206    NA none       green      orange            NA male  mascu…
+2 Biggs Da…    183    84 black      light      brown             24 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -2011,7 +2011,7 @@ count: false
 ---
 count: false
  
-# Slice (subsetting rows by position)
+# Slice (other kinds of subsets)
 .panel1-slice-rotate[
 
 ``` r
@@ -3249,11 +3249,11 @@ ds &lt;- slice_tail(select(ds, height), n = 5)
 ---
 # Rename
 
-- Using rename can help clean up messy names from other sources
+- Using dplyr's `rename` and `rename_with` can help clean up messy names from other sources
   * Avoid names that contain spaces or start with numbers
   * Force names to use a similar format like snake_case or camelCase
 
-- Installing and loading the `janitor` package opens up some helpful renaming options
+- Installing and loading the `janitor` package opens up some helpful renaming tools
 
 ---
 count: false
@@ -3262,7 +3262,6 @@ count: false
 .panel1-rename-rotate[
 
 ``` r
-library(janitor)
 # Switching to built-in iris data set since starwars has good names
 *iris
 ```
@@ -3432,7 +3431,6 @@ count: false
 .panel1-rename-rotate[
 
 ``` r
-library(janitor)
 # Switching to built-in iris data set since starwars has good names
 *iris %&gt;% rename(sepal_length = Sepal.Length)
 ```
@@ -3602,7 +3600,6 @@ count: false
 .panel1-rename-rotate[
 
 ``` r
-library(janitor)
 # Switching to built-in iris data set since starwars has good names
 *iris %&gt;% rename(sepal_length = Sepal.Length, sepal_width = Sepal.Width, petal_length = Petal.Length, petal_width = Petal.Width, species = Species)
 ```
@@ -3772,7 +3769,6 @@ count: false
 .panel1-rename-rotate[
 
 ``` r
-library(janitor)
 # Switching to built-in iris data set since starwars has good names
 *iris %&gt;% rename_with(toupper)
 ```
@@ -3942,7 +3938,6 @@ count: false
 .panel1-rename-rotate[
 
 ``` r
-library(janitor)
 # Switching to built-in iris data set since starwars has good names
 *iris %&gt;% rename_with(tolower, starts_with("Petal"))
 ```
@@ -4105,20 +4100,266 @@ library(janitor)
 ```
 ]
 
+&lt;style&gt;
+.panel1-rename-rotate {
+  color: black;
+  width: 81.6666666666667%;
+  hight: 32%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-rename-rotate {
+  color: black;
+  width: 16.3333333333333%;
+  hight: 32%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-rename-rotate {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
 ---
 count: false
  
-# Rename columns
-.panel1-rename-rotate[
+# Rename columns with a lookup table
+.panel1-rename_lookup-auto[
+
+``` r
+*lookup &lt;- c(pet_length = "Petal.Length", pet_width = "Petal.Width",
+*           sep_length = "Sepal.Length", sep_width = "Sepal.Width")
+```
+]
+ 
+.panel2-rename_lookup-auto[
+
+]
+
+---
+count: false
+ 
+# Rename columns with a lookup table
+.panel1-rename_lookup-auto[
+
+``` r
+lookup &lt;- c(pet_length = "Petal.Length", pet_width = "Petal.Width",
+            sep_length = "Sepal.Length", sep_width = "Sepal.Width")
+*iris %&gt;% rename(all_of(lookup))
+```
+]
+ 
+.panel2-rename_lookup-auto[
+
+```
+    sep_length sep_width pet_length pet_width    Species
+1          5.1       3.5        1.4       0.2     setosa
+2          4.9       3.0        1.4       0.2     setosa
+3          4.7       3.2        1.3       0.2     setosa
+4          4.6       3.1        1.5       0.2     setosa
+5          5.0       3.6        1.4       0.2     setosa
+6          5.4       3.9        1.7       0.4     setosa
+7          4.6       3.4        1.4       0.3     setosa
+8          5.0       3.4        1.5       0.2     setosa
+9          4.4       2.9        1.4       0.2     setosa
+10         4.9       3.1        1.5       0.1     setosa
+11         5.4       3.7        1.5       0.2     setosa
+12         4.8       3.4        1.6       0.2     setosa
+13         4.8       3.0        1.4       0.1     setosa
+14         4.3       3.0        1.1       0.1     setosa
+15         5.8       4.0        1.2       0.2     setosa
+16         5.7       4.4        1.5       0.4     setosa
+17         5.4       3.9        1.3       0.4     setosa
+18         5.1       3.5        1.4       0.3     setosa
+19         5.7       3.8        1.7       0.3     setosa
+20         5.1       3.8        1.5       0.3     setosa
+21         5.4       3.4        1.7       0.2     setosa
+22         5.1       3.7        1.5       0.4     setosa
+23         4.6       3.6        1.0       0.2     setosa
+24         5.1       3.3        1.7       0.5     setosa
+25         4.8       3.4        1.9       0.2     setosa
+26         5.0       3.0        1.6       0.2     setosa
+27         5.0       3.4        1.6       0.4     setosa
+28         5.2       3.5        1.5       0.2     setosa
+29         5.2       3.4        1.4       0.2     setosa
+30         4.7       3.2        1.6       0.2     setosa
+31         4.8       3.1        1.6       0.2     setosa
+32         5.4       3.4        1.5       0.4     setosa
+33         5.2       4.1        1.5       0.1     setosa
+34         5.5       4.2        1.4       0.2     setosa
+35         4.9       3.1        1.5       0.2     setosa
+36         5.0       3.2        1.2       0.2     setosa
+37         5.5       3.5        1.3       0.2     setosa
+38         4.9       3.6        1.4       0.1     setosa
+39         4.4       3.0        1.3       0.2     setosa
+40         5.1       3.4        1.5       0.2     setosa
+41         5.0       3.5        1.3       0.3     setosa
+42         4.5       2.3        1.3       0.3     setosa
+43         4.4       3.2        1.3       0.2     setosa
+44         5.0       3.5        1.6       0.6     setosa
+45         5.1       3.8        1.9       0.4     setosa
+46         4.8       3.0        1.4       0.3     setosa
+47         5.1       3.8        1.6       0.2     setosa
+48         4.6       3.2        1.4       0.2     setosa
+49         5.3       3.7        1.5       0.2     setosa
+50         5.0       3.3        1.4       0.2     setosa
+51         7.0       3.2        4.7       1.4 versicolor
+52         6.4       3.2        4.5       1.5 versicolor
+53         6.9       3.1        4.9       1.5 versicolor
+54         5.5       2.3        4.0       1.3 versicolor
+55         6.5       2.8        4.6       1.5 versicolor
+56         5.7       2.8        4.5       1.3 versicolor
+57         6.3       3.3        4.7       1.6 versicolor
+58         4.9       2.4        3.3       1.0 versicolor
+59         6.6       2.9        4.6       1.3 versicolor
+60         5.2       2.7        3.9       1.4 versicolor
+61         5.0       2.0        3.5       1.0 versicolor
+62         5.9       3.0        4.2       1.5 versicolor
+63         6.0       2.2        4.0       1.0 versicolor
+64         6.1       2.9        4.7       1.4 versicolor
+65         5.6       2.9        3.6       1.3 versicolor
+66         6.7       3.1        4.4       1.4 versicolor
+67         5.6       3.0        4.5       1.5 versicolor
+68         5.8       2.7        4.1       1.0 versicolor
+69         6.2       2.2        4.5       1.5 versicolor
+70         5.6       2.5        3.9       1.1 versicolor
+71         5.9       3.2        4.8       1.8 versicolor
+72         6.1       2.8        4.0       1.3 versicolor
+73         6.3       2.5        4.9       1.5 versicolor
+74         6.1       2.8        4.7       1.2 versicolor
+75         6.4       2.9        4.3       1.3 versicolor
+76         6.6       3.0        4.4       1.4 versicolor
+77         6.8       2.8        4.8       1.4 versicolor
+78         6.7       3.0        5.0       1.7 versicolor
+79         6.0       2.9        4.5       1.5 versicolor
+80         5.7       2.6        3.5       1.0 versicolor
+81         5.5       2.4        3.8       1.1 versicolor
+82         5.5       2.4        3.7       1.0 versicolor
+83         5.8       2.7        3.9       1.2 versicolor
+84         6.0       2.7        5.1       1.6 versicolor
+85         5.4       3.0        4.5       1.5 versicolor
+86         6.0       3.4        4.5       1.6 versicolor
+87         6.7       3.1        4.7       1.5 versicolor
+88         6.3       2.3        4.4       1.3 versicolor
+89         5.6       3.0        4.1       1.3 versicolor
+90         5.5       2.5        4.0       1.3 versicolor
+91         5.5       2.6        4.4       1.2 versicolor
+92         6.1       3.0        4.6       1.4 versicolor
+93         5.8       2.6        4.0       1.2 versicolor
+94         5.0       2.3        3.3       1.0 versicolor
+95         5.6       2.7        4.2       1.3 versicolor
+96         5.7       3.0        4.2       1.2 versicolor
+97         5.7       2.9        4.2       1.3 versicolor
+98         6.2       2.9        4.3       1.3 versicolor
+99         5.1       2.5        3.0       1.1 versicolor
+100        5.7       2.8        4.1       1.3 versicolor
+101        6.3       3.3        6.0       2.5  virginica
+102        5.8       2.7        5.1       1.9  virginica
+103        7.1       3.0        5.9       2.1  virginica
+104        6.3       2.9        5.6       1.8  virginica
+105        6.5       3.0        5.8       2.2  virginica
+106        7.6       3.0        6.6       2.1  virginica
+107        4.9       2.5        4.5       1.7  virginica
+108        7.3       2.9        6.3       1.8  virginica
+109        6.7       2.5        5.8       1.8  virginica
+110        7.2       3.6        6.1       2.5  virginica
+111        6.5       3.2        5.1       2.0  virginica
+112        6.4       2.7        5.3       1.9  virginica
+113        6.8       3.0        5.5       2.1  virginica
+114        5.7       2.5        5.0       2.0  virginica
+115        5.8       2.8        5.1       2.4  virginica
+116        6.4       3.2        5.3       2.3  virginica
+117        6.5       3.0        5.5       1.8  virginica
+118        7.7       3.8        6.7       2.2  virginica
+119        7.7       2.6        6.9       2.3  virginica
+120        6.0       2.2        5.0       1.5  virginica
+121        6.9       3.2        5.7       2.3  virginica
+122        5.6       2.8        4.9       2.0  virginica
+123        7.7       2.8        6.7       2.0  virginica
+124        6.3       2.7        4.9       1.8  virginica
+125        6.7       3.3        5.7       2.1  virginica
+126        7.2       3.2        6.0       1.8  virginica
+127        6.2       2.8        4.8       1.8  virginica
+128        6.1       3.0        4.9       1.8  virginica
+129        6.4       2.8        5.6       2.1  virginica
+130        7.2       3.0        5.8       1.6  virginica
+131        7.4       2.8        6.1       1.9  virginica
+132        7.9       3.8        6.4       2.0  virginica
+133        6.4       2.8        5.6       2.2  virginica
+134        6.3       2.8        5.1       1.5  virginica
+135        6.1       2.6        5.6       1.4  virginica
+136        7.7       3.0        6.1       2.3  virginica
+137        6.3       3.4        5.6       2.4  virginica
+138        6.4       3.1        5.5       1.8  virginica
+139        6.0       3.0        4.8       1.8  virginica
+140        6.9       3.1        5.4       2.1  virginica
+141        6.7       3.1        5.6       2.4  virginica
+142        6.9       3.1        5.1       2.3  virginica
+143        5.8       2.7        5.1       1.9  virginica
+144        6.8       3.2        5.9       2.3  virginica
+145        6.7       3.3        5.7       2.5  virginica
+146        6.7       3.0        5.2       2.3  virginica
+147        6.3       2.5        5.0       1.9  virginica
+148        6.5       3.0        5.2       2.0  virginica
+149        6.2       3.4        5.4       2.3  virginica
+150        5.9       3.0        5.1       1.8  virginica
+```
+]
+
+&lt;style&gt;
+.panel1-rename_lookup-auto {
+  color: black;
+  width: 81.6666666666667%;
+  hight: 32%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-rename_lookup-auto {
+  color: black;
+  width: 16.3333333333333%;
+  hight: 32%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-rename_lookup-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+count: false
+ 
+# Rename columns with janitor
+.panel1-janitor-rotate[
 
 ``` r
 library(janitor)
-# Switching to built-in iris data set since starwars has good names
 *iris %&gt;% clean_names()
 ```
 ]
  
-.panel2-rename-rotate[
+.panel2-janitor-rotate[
 
 ```
     sepal_length sepal_width petal_length petal_width    species
@@ -4278,17 +4519,16 @@ library(janitor)
 ---
 count: false
  
-# Rename columns
-.panel1-rename-rotate[
+# Rename columns with janitor
+.panel1-janitor-rotate[
 
 ``` r
 library(janitor)
-# Switching to built-in iris data set since starwars has good names
 *iris %&gt;% clean_names("lower_camel")
 ```
 ]
  
-.panel2-rename-rotate[
+.panel2-janitor-rotate[
 
 ```
     sepalLength sepalWidth petalLength petalWidth    species
@@ -4445,8 +4685,177 @@ library(janitor)
 ```
 ]
 
+---
+count: false
+ 
+# Rename columns with janitor
+.panel1-janitor-rotate[
+
+``` r
+library(janitor)
+*iris %&gt;% clean_names("title")
+```
+]
+ 
+.panel2-janitor-rotate[
+
+```
+    Sepal Length Sepal Width Petal Length Petal Width    Species
+1            5.1         3.5          1.4         0.2     setosa
+2            4.9         3.0          1.4         0.2     setosa
+3            4.7         3.2          1.3         0.2     setosa
+4            4.6         3.1          1.5         0.2     setosa
+5            5.0         3.6          1.4         0.2     setosa
+6            5.4         3.9          1.7         0.4     setosa
+7            4.6         3.4          1.4         0.3     setosa
+8            5.0         3.4          1.5         0.2     setosa
+9            4.4         2.9          1.4         0.2     setosa
+10           4.9         3.1          1.5         0.1     setosa
+11           5.4         3.7          1.5         0.2     setosa
+12           4.8         3.4          1.6         0.2     setosa
+13           4.8         3.0          1.4         0.1     setosa
+14           4.3         3.0          1.1         0.1     setosa
+15           5.8         4.0          1.2         0.2     setosa
+16           5.7         4.4          1.5         0.4     setosa
+17           5.4         3.9          1.3         0.4     setosa
+18           5.1         3.5          1.4         0.3     setosa
+19           5.7         3.8          1.7         0.3     setosa
+20           5.1         3.8          1.5         0.3     setosa
+21           5.4         3.4          1.7         0.2     setosa
+22           5.1         3.7          1.5         0.4     setosa
+23           4.6         3.6          1.0         0.2     setosa
+24           5.1         3.3          1.7         0.5     setosa
+25           4.8         3.4          1.9         0.2     setosa
+26           5.0         3.0          1.6         0.2     setosa
+27           5.0         3.4          1.6         0.4     setosa
+28           5.2         3.5          1.5         0.2     setosa
+29           5.2         3.4          1.4         0.2     setosa
+30           4.7         3.2          1.6         0.2     setosa
+31           4.8         3.1          1.6         0.2     setosa
+32           5.4         3.4          1.5         0.4     setosa
+33           5.2         4.1          1.5         0.1     setosa
+34           5.5         4.2          1.4         0.2     setosa
+35           4.9         3.1          1.5         0.2     setosa
+36           5.0         3.2          1.2         0.2     setosa
+37           5.5         3.5          1.3         0.2     setosa
+38           4.9         3.6          1.4         0.1     setosa
+39           4.4         3.0          1.3         0.2     setosa
+40           5.1         3.4          1.5         0.2     setosa
+41           5.0         3.5          1.3         0.3     setosa
+42           4.5         2.3          1.3         0.3     setosa
+43           4.4         3.2          1.3         0.2     setosa
+44           5.0         3.5          1.6         0.6     setosa
+45           5.1         3.8          1.9         0.4     setosa
+46           4.8         3.0          1.4         0.3     setosa
+47           5.1         3.8          1.6         0.2     setosa
+48           4.6         3.2          1.4         0.2     setosa
+49           5.3         3.7          1.5         0.2     setosa
+50           5.0         3.3          1.4         0.2     setosa
+51           7.0         3.2          4.7         1.4 versicolor
+52           6.4         3.2          4.5         1.5 versicolor
+53           6.9         3.1          4.9         1.5 versicolor
+54           5.5         2.3          4.0         1.3 versicolor
+55           6.5         2.8          4.6         1.5 versicolor
+56           5.7         2.8          4.5         1.3 versicolor
+57           6.3         3.3          4.7         1.6 versicolor
+58           4.9         2.4          3.3         1.0 versicolor
+59           6.6         2.9          4.6         1.3 versicolor
+60           5.2         2.7          3.9         1.4 versicolor
+61           5.0         2.0          3.5         1.0 versicolor
+62           5.9         3.0          4.2         1.5 versicolor
+63           6.0         2.2          4.0         1.0 versicolor
+64           6.1         2.9          4.7         1.4 versicolor
+65           5.6         2.9          3.6         1.3 versicolor
+66           6.7         3.1          4.4         1.4 versicolor
+67           5.6         3.0          4.5         1.5 versicolor
+68           5.8         2.7          4.1         1.0 versicolor
+69           6.2         2.2          4.5         1.5 versicolor
+70           5.6         2.5          3.9         1.1 versicolor
+71           5.9         3.2          4.8         1.8 versicolor
+72           6.1         2.8          4.0         1.3 versicolor
+73           6.3         2.5          4.9         1.5 versicolor
+74           6.1         2.8          4.7         1.2 versicolor
+75           6.4         2.9          4.3         1.3 versicolor
+76           6.6         3.0          4.4         1.4 versicolor
+77           6.8         2.8          4.8         1.4 versicolor
+78           6.7         3.0          5.0         1.7 versicolor
+79           6.0         2.9          4.5         1.5 versicolor
+80           5.7         2.6          3.5         1.0 versicolor
+81           5.5         2.4          3.8         1.1 versicolor
+82           5.5         2.4          3.7         1.0 versicolor
+83           5.8         2.7          3.9         1.2 versicolor
+84           6.0         2.7          5.1         1.6 versicolor
+85           5.4         3.0          4.5         1.5 versicolor
+86           6.0         3.4          4.5         1.6 versicolor
+87           6.7         3.1          4.7         1.5 versicolor
+88           6.3         2.3          4.4         1.3 versicolor
+89           5.6         3.0          4.1         1.3 versicolor
+90           5.5         2.5          4.0         1.3 versicolor
+91           5.5         2.6          4.4         1.2 versicolor
+92           6.1         3.0          4.6         1.4 versicolor
+93           5.8         2.6          4.0         1.2 versicolor
+94           5.0         2.3          3.3         1.0 versicolor
+95           5.6         2.7          4.2         1.3 versicolor
+96           5.7         3.0          4.2         1.2 versicolor
+97           5.7         2.9          4.2         1.3 versicolor
+98           6.2         2.9          4.3         1.3 versicolor
+99           5.1         2.5          3.0         1.1 versicolor
+100          5.7         2.8          4.1         1.3 versicolor
+101          6.3         3.3          6.0         2.5  virginica
+102          5.8         2.7          5.1         1.9  virginica
+103          7.1         3.0          5.9         2.1  virginica
+104          6.3         2.9          5.6         1.8  virginica
+105          6.5         3.0          5.8         2.2  virginica
+106          7.6         3.0          6.6         2.1  virginica
+107          4.9         2.5          4.5         1.7  virginica
+108          7.3         2.9          6.3         1.8  virginica
+109          6.7         2.5          5.8         1.8  virginica
+110          7.2         3.6          6.1         2.5  virginica
+111          6.5         3.2          5.1         2.0  virginica
+112          6.4         2.7          5.3         1.9  virginica
+113          6.8         3.0          5.5         2.1  virginica
+114          5.7         2.5          5.0         2.0  virginica
+115          5.8         2.8          5.1         2.4  virginica
+116          6.4         3.2          5.3         2.3  virginica
+117          6.5         3.0          5.5         1.8  virginica
+118          7.7         3.8          6.7         2.2  virginica
+119          7.7         2.6          6.9         2.3  virginica
+120          6.0         2.2          5.0         1.5  virginica
+121          6.9         3.2          5.7         2.3  virginica
+122          5.6         2.8          4.9         2.0  virginica
+123          7.7         2.8          6.7         2.0  virginica
+124          6.3         2.7          4.9         1.8  virginica
+125          6.7         3.3          5.7         2.1  virginica
+126          7.2         3.2          6.0         1.8  virginica
+127          6.2         2.8          4.8         1.8  virginica
+128          6.1         3.0          4.9         1.8  virginica
+129          6.4         2.8          5.6         2.1  virginica
+130          7.2         3.0          5.8         1.6  virginica
+131          7.4         2.8          6.1         1.9  virginica
+132          7.9         3.8          6.4         2.0  virginica
+133          6.4         2.8          5.6         2.2  virginica
+134          6.3         2.8          5.1         1.5  virginica
+135          6.1         2.6          5.6         1.4  virginica
+136          7.7         3.0          6.1         2.3  virginica
+137          6.3         3.4          5.6         2.4  virginica
+138          6.4         3.1          5.5         1.8  virginica
+139          6.0         3.0          4.8         1.8  virginica
+140          6.9         3.1          5.4         2.1  virginica
+141          6.7         3.1          5.6         2.4  virginica
+142          6.9         3.1          5.1         2.3  virginica
+143          5.8         2.7          5.1         1.9  virginica
+144          6.8         3.2          5.9         2.3  virginica
+145          6.7         3.3          5.7         2.5  virginica
+146          6.7         3.0          5.2         2.3  virginica
+147          6.3         2.5          5.0         1.9  virginica
+148          6.5         3.0          5.2         2.0  virginica
+149          6.2         3.4          5.4         2.3  virginica
+150          5.9         3.0          5.1         1.8  virginica
+```
+]
+
 &lt;style&gt;
-.panel1-rename-rotate {
+.panel1-janitor-rotate {
   color: black;
   width: 81.6666666666667%;
   hight: 32%;
@@ -4454,7 +4863,7 @@ library(janitor)
   padding-left: 1%;
   font-size: 80%
 }
-.panel2-rename-rotate {
+.panel2-janitor-rotate {
   color: black;
   width: 16.3333333333333%;
   hight: 32%;
@@ -4462,7 +4871,7 @@ library(janitor)
   padding-left: 1%;
   font-size: 80%
 }
-.panel3-rename-rotate {
+.panel3-janitor-rotate {
   color: black;
   width: NA%;
   hight: 33%;
@@ -4471,6 +4880,7 @@ library(janitor)
   font-size: 80%
 }
 &lt;/style&gt;
+
 
 
 
@@ -4529,7 +4939,7 @@ count: false
 
 ``` r
 ds &lt;- starwars %&gt;% select(name, mass, height, hair_color)
-*ds &lt;- ds %&gt;% mutate(in_movie = "yes")
+*ds &lt;- ds %&gt;% mutate(in_movie = TRUE, .before = 1)
 
 ds
 ```
@@ -4539,18 +4949,18 @@ ds
 
 ```
 # A tibble: 87 × 5
-   name                mass height hair_color    in_movie
-   &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;   
- 1 Luke Skywalker        77    172 blond         yes     
- 2 C-3PO                 75    167 &lt;NA&gt;          yes     
- 3 R2-D2                 32     96 &lt;NA&gt;          yes     
- 4 Darth Vader          136    202 none          yes     
- 5 Leia Organa           49    150 brown         yes     
- 6 Owen Lars            120    178 brown, grey   yes     
- 7 Beru Whitesun Lars    75    165 brown         yes     
- 8 R5-D4                 32     97 &lt;NA&gt;          yes     
- 9 Biggs Darklighter     84    183 black         yes     
-10 Obi-Wan Kenobi        77    182 auburn, white yes     
+   in_movie name                mass height hair_color   
+   &lt;lgl&gt;    &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;        
+ 1 TRUE     Luke Skywalker        77    172 blond        
+ 2 TRUE     C-3PO                 75    167 &lt;NA&gt;         
+ 3 TRUE     R2-D2                 32     96 &lt;NA&gt;         
+ 4 TRUE     Darth Vader          136    202 none         
+ 5 TRUE     Leia Organa           49    150 brown        
+ 6 TRUE     Owen Lars            120    178 brown, grey  
+ 7 TRUE     Beru Whitesun Lars    75    165 brown        
+ 8 TRUE     R5-D4                 32     97 &lt;NA&gt;         
+ 9 TRUE     Biggs Darklighter     84    183 black        
+10 TRUE     Obi-Wan Kenobi        77    182 auburn, white
 # ℹ 77 more rows
 ```
 ]
@@ -4563,10 +4973,10 @@ count: false
 
 ``` r
 ds &lt;- starwars %&gt;% select(name, mass, height, hair_color)
-ds &lt;- ds %&gt;% mutate(in_movie = "yes")
+ds &lt;- ds %&gt;% mutate(in_movie = TRUE, .before = 1)
 *ds &lt;- ds %&gt;% mutate(height_m = height/100,
 *                   bmi = mass/(height_m^2),
-*                   bmi = round(bmi))
+*                   bmi = round(bmi), .after = "height")
 
 ds
 ```
@@ -4576,18 +4986,18 @@ ds
 
 ```
 # A tibble: 87 × 7
-   name                mass height hair_color    in_movie height_m   bmi
-   &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;
- 1 Luke Skywalker        77    172 blond         yes          1.72    26
- 2 C-3PO                 75    167 &lt;NA&gt;          yes          1.67    27
- 3 R2-D2                 32     96 &lt;NA&gt;          yes          0.96    35
- 4 Darth Vader          136    202 none          yes          2.02    33
- 5 Leia Organa           49    150 brown         yes          1.5     22
- 6 Owen Lars            120    178 brown, grey   yes          1.78    38
- 7 Beru Whitesun Lars    75    165 brown         yes          1.65    28
- 8 R5-D4                 32     97 &lt;NA&gt;          yes          0.97    34
- 9 Biggs Darklighter     84    183 black         yes          1.83    25
-10 Obi-Wan Kenobi        77    182 auburn, white yes          1.82    23
+   in_movie name                mass height height_m   bmi hair_color   
+   &lt;lgl&gt;    &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;        
+ 1 TRUE     Luke Skywalker        77    172     1.72    26 blond        
+ 2 TRUE     C-3PO                 75    167     1.67    27 &lt;NA&gt;         
+ 3 TRUE     R2-D2                 32     96     0.96    35 &lt;NA&gt;         
+ 4 TRUE     Darth Vader          136    202     2.02    33 none         
+ 5 TRUE     Leia Organa           49    150     1.5     22 brown        
+ 6 TRUE     Owen Lars            120    178     1.78    38 brown, grey  
+ 7 TRUE     Beru Whitesun Lars    75    165     1.65    28 brown        
+ 8 TRUE     R5-D4                 32     97     0.97    34 &lt;NA&gt;         
+ 9 TRUE     Biggs Darklighter     84    183     1.83    25 black        
+10 TRUE     Obi-Wan Kenobi        77    182     1.82    23 auburn, white
 # ℹ 77 more rows
 ```
 ]
@@ -4600,10 +5010,10 @@ count: false
 
 ``` r
 ds &lt;- starwars %&gt;% select(name, mass, height, hair_color)
-ds &lt;- ds %&gt;% mutate(in_movie = "yes")
+ds &lt;- ds %&gt;% mutate(in_movie = TRUE, .before = 1)
 ds &lt;- ds %&gt;% mutate(height_m = height/100,
                     bmi = mass/(height_m^2),
-                    bmi = round(bmi)) %&gt;%
+                    bmi = round(bmi), .after = "height") %&gt;%
 *           arrange(desc(bmi))
 
 ds
@@ -4614,18 +5024,18 @@ ds
 
 ```
 # A tibble: 87 × 7
-   name                   mass height hair_color  in_movie height_m   bmi
-   &lt;chr&gt;                 &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;
- 1 Jabba Desilijic Tiure  1358    175 &lt;NA&gt;        yes          1.75   443
- 2 Dud Bolt                 45     94 none        yes          0.94    51
- 3 Yoda                     17     66 white       yes          0.66    39
- 4 Owen Lars               120    178 brown, grey yes          1.78    38
- 5 R2-D2                    32     96 &lt;NA&gt;        yes          0.96    35
- 6 IG-88                   140    200 none        yes          2       35
- 7 R5-D4                    32     97 &lt;NA&gt;        yes          0.97    34
- 8 Jek Tono Porkins        110    180 brown       yes          1.8     34
- 9 Grievous                159    216 none        yes          2.16    34
-10 Darth Vader             136    202 none        yes          2.02    33
+   in_movie name                   mass height height_m   bmi hair_color 
+   &lt;lgl&gt;    &lt;chr&gt;                 &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      
+ 1 TRUE     Jabba Desilijic Tiure  1358    175     1.75   443 &lt;NA&gt;       
+ 2 TRUE     Dud Bolt                 45     94     0.94    51 none       
+ 3 TRUE     Yoda                     17     66     0.66    39 white      
+ 4 TRUE     Owen Lars               120    178     1.78    38 brown, grey
+ 5 TRUE     R2-D2                    32     96     0.96    35 &lt;NA&gt;       
+ 6 TRUE     IG-88                   140    200     2       35 none       
+ 7 TRUE     R5-D4                    32     97     0.97    34 &lt;NA&gt;       
+ 8 TRUE     Jek Tono Porkins        110    180     1.8     34 brown      
+ 9 TRUE     Grievous                159    216     2.16    34 none       
+10 TRUE     Darth Vader             136    202     2.02    33 none       
 # ℹ 77 more rows
 ```
 ]
@@ -4638,10 +5048,10 @@ count: false
 
 ``` r
 ds &lt;- starwars %&gt;% select(name, mass, height, hair_color)
-ds &lt;- ds %&gt;% mutate(in_movie = "yes")
+ds &lt;- ds %&gt;% mutate(in_movie = TRUE, .before = 1)
 ds &lt;- ds %&gt;% mutate(height_m = height/100,
                     bmi = mass/(height_m^2),
-                    bmi = round(bmi)) %&gt;%
+                    bmi = round(bmi), .after = "height") %&gt;%
             arrange(desc(bmi))
 
 *ds &lt;- ds
@@ -4654,18 +5064,18 @@ ds
 
 ```
 # A tibble: 87 × 7
-   name                   mass height hair_color  in_movie height_m   bmi
-   &lt;chr&gt;                 &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;
- 1 Jabba Desilijic Tiure  1358    175 &lt;NA&gt;        yes          1.75   443
- 2 Dud Bolt                 45     94 none        yes          0.94    51
- 3 Yoda                     17     66 white       yes          0.66    39
- 4 Owen Lars               120    178 brown, grey yes          1.78    38
- 5 R2-D2                    32     96 &lt;NA&gt;        yes          0.96    35
- 6 IG-88                   140    200 none        yes          2       35
- 7 R5-D4                    32     97 &lt;NA&gt;        yes          0.97    34
- 8 Jek Tono Porkins        110    180 brown       yes          1.8     34
- 9 Grievous                159    216 none        yes          2.16    34
-10 Darth Vader             136    202 none        yes          2.02    33
+   in_movie name                   mass height height_m   bmi hair_color 
+   &lt;lgl&gt;    &lt;chr&gt;                 &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      
+ 1 TRUE     Jabba Desilijic Tiure  1358    175     1.75   443 &lt;NA&gt;       
+ 2 TRUE     Dud Bolt                 45     94     0.94    51 none       
+ 3 TRUE     Yoda                     17     66     0.66    39 white      
+ 4 TRUE     Owen Lars               120    178     1.78    38 brown, grey
+ 5 TRUE     R2-D2                    32     96     0.96    35 &lt;NA&gt;       
+ 6 TRUE     IG-88                   140    200     2       35 none       
+ 7 TRUE     R5-D4                    32     97     0.97    34 &lt;NA&gt;       
+ 8 TRUE     Jek Tono Porkins        110    180     1.8     34 brown      
+ 9 TRUE     Grievous                159    216     2.16    34 none       
+10 TRUE     Darth Vader             136    202     2.02    33 none       
 # ℹ 77 more rows
 ```
 ]
@@ -4678,10 +5088,10 @@ count: false
 
 ``` r
 ds &lt;- starwars %&gt;% select(name, mass, height, hair_color)
-ds &lt;- ds %&gt;% mutate(in_movie = "yes")
+ds &lt;- ds %&gt;% mutate(in_movie = TRUE, .before = 1)
 ds &lt;- ds %&gt;% mutate(height_m = height/100,
                     bmi = mass/(height_m^2),
-                    bmi = round(bmi)) %&gt;%
+                    bmi = round(bmi), .after = "height") %&gt;%
             arrange(desc(bmi))
 
 ds &lt;- ds %&gt;%
@@ -4695,16 +5105,16 @@ ds
 
 ```
 # A tibble: 8 × 7
-  name                   mass height hair_color in_movie height_m   bmi
-  &lt;chr&gt;                 &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;
-1 Jabba Desilijic Tiure  1358    175 &lt;NA&gt;       yes          1.75   443
-2 R2-D2                    32     96 &lt;NA&gt;       yes          0.96    35
-3 R5-D4                    32     97 &lt;NA&gt;       yes          0.97    34
-4 C-3PO                    75    167 &lt;NA&gt;       yes          1.67    27
-5 Luke Skywalker           77    172 blond      yes          1.72    26
-6 Greedo                   74    173 &lt;NA&gt;       yes          1.73    25
-7 Anakin Skywalker         84    188 blond      yes          1.88    24
-8 Finis Valorum            NA    170 blond      yes          1.7     NA
+  in_movie name                   mass height height_m   bmi hair_color
+  &lt;lgl&gt;    &lt;chr&gt;                 &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     
+1 TRUE     Jabba Desilijic Tiure  1358    175     1.75   443 &lt;NA&gt;      
+2 TRUE     R2-D2                    32     96     0.96    35 &lt;NA&gt;      
+3 TRUE     R5-D4                    32     97     0.97    34 &lt;NA&gt;      
+4 TRUE     C-3PO                    75    167     1.67    27 &lt;NA&gt;      
+5 TRUE     Luke Skywalker           77    172     1.72    26 blond     
+6 TRUE     Greedo                   74    173     1.73    25 &lt;NA&gt;      
+7 TRUE     Anakin Skywalker         84    188     1.88    24 blond     
+8 TRUE     Finis Valorum            NA    170     1.7     NA blond     
 ```
 ]
 
@@ -4716,10 +5126,10 @@ count: false
 
 ``` r
 ds &lt;- starwars %&gt;% select(name, mass, height, hair_color)
-ds &lt;- ds %&gt;% mutate(in_movie = "yes")
+ds &lt;- ds %&gt;% mutate(in_movie = TRUE, .before = 1)
 ds &lt;- ds %&gt;% mutate(height_m = height/100,
                     bmi = mass/(height_m^2),
-                    bmi = round(bmi)) %&gt;%
+                    bmi = round(bmi), .after = "height") %&gt;%
             arrange(desc(bmi))
 
 ds &lt;- ds %&gt;%
@@ -4735,16 +5145,16 @@ ds
 
 ```
 # A tibble: 8 × 7
-  name                  mass     height hair_color in_movie height_m   bmi
-  &lt;chr&gt;                 &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;
-1 Jabba Desilijic Tiure huge        175 no hair    yes          1.75   443
-2 R2-D2                 not huge     96 no hair    yes          0.96    35
-3 R5-D4                 not huge     97 no hair    yes          0.97    34
-4 C-3PO                 not huge    167 no hair    yes          1.67    27
-5 Luke Skywalker        not huge    172 blond      yes          1.72    26
-6 Greedo                not huge    173 no hair    yes          1.73    25
-7 Anakin Skywalker      not huge    188 blond      yes          1.88    24
-8 Finis Valorum         &lt;NA&gt;        170 blond      yes          1.7     NA
+  in_movie name                  mass     height height_m   bmi hair_color
+  &lt;lgl&gt;    &lt;chr&gt;                 &lt;chr&gt;     &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     
+1 TRUE     Jabba Desilijic Tiure huge        175     1.75   443 no hair   
+2 TRUE     R2-D2                 not huge     96     0.96    35 no hair   
+3 TRUE     R5-D4                 not huge     97     0.97    34 no hair   
+4 TRUE     C-3PO                 not huge    167     1.67    27 no hair   
+5 TRUE     Luke Skywalker        not huge    172     1.72    26 blond     
+6 TRUE     Greedo                not huge    173     1.73    25 no hair   
+7 TRUE     Anakin Skywalker      not huge    188     1.88    24 blond     
+8 TRUE     Finis Valorum         &lt;NA&gt;        170     1.7     NA blond     
 ```
 ]
 
@@ -4780,7 +5190,7 @@ ds
 
 
 ---
-# Tricky, common task: Changing some but not all values within a column
+# Common task: Changing some but not all values within a column
 
 
 ``` r
@@ -4798,7 +5208,7 @@ count: false
 .panel1-summarize-auto[
 
 ``` r
-*ds &lt;- starwars %&gt;% select(name, mass, height, species)
+*ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
 ```
 ]
  
@@ -4813,7 +5223,7 @@ count: false
 .panel1-summarize-auto[
 
 ``` r
-ds &lt;- starwars %&gt;% select(name, mass, height, species)
+ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
 *ds %&gt;% summarize(min_height = min(height))
 ```
 ]
@@ -4835,7 +5245,7 @@ count: false
 .panel1-summarize-auto[
 
 ``` r
-ds &lt;- starwars %&gt;% select(name, mass, height, species)
+ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
 ds %&gt;% summarize(min_height = min(height))
 *ds %&gt;% summarize(min_height = min(height, na.rm = T))
 ```
@@ -4865,7 +5275,7 @@ count: false
 .panel1-summarize-auto[
 
 ``` r
-ds &lt;- starwars %&gt;% select(name, mass, height, species)
+ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
 ds %&gt;% summarize(min_height = min(height))
 ds %&gt;% summarize(min_height = min(height, na.rm = T))
 
@@ -4906,7 +5316,7 @@ count: false
 .panel1-summarize-auto[
 
 ``` r
-ds &lt;- starwars %&gt;% select(name, mass, height, species)
+ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
 ds %&gt;% summarize(min_height = min(height))
 ds %&gt;% summarize(min_height = min(height, na.rm = T))
 
@@ -4914,7 +5324,7 @@ ds %&gt;% summarize(min_height = min(height, na.rm = T),
                  m_height = mean(height, na.rm = T),
                  max_height = max(height, na.rm = T))
 
-*ds %&gt;% group_by(species)
+*ds %&gt;% group_by(species, sex)
 ```
 ]
  
@@ -4942,20 +5352,20 @@ ds %&gt;% summarize(min_height = min(height, na.rm = T),
 ```
 
 ```
-# A tibble: 87 × 4
-# Groups:   species [38]
-   name                mass height species
-   &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;  
- 1 Luke Skywalker        77    172 Human  
- 2 C-3PO                 75    167 Droid  
- 3 R2-D2                 32     96 Droid  
- 4 Darth Vader          136    202 Human  
- 5 Leia Organa           49    150 Human  
- 6 Owen Lars            120    178 Human  
- 7 Beru Whitesun Lars    75    165 Human  
- 8 R5-D4                 32     97 Droid  
- 9 Biggs Darklighter     84    183 Human  
-10 Obi-Wan Kenobi        77    182 Human  
+# A tibble: 87 × 5
+# Groups:   species, sex [41]
+   name                mass height species sex   
+   &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; 
+ 1 Luke Skywalker        77    172 Human   male  
+ 2 C-3PO                 75    167 Droid   none  
+ 3 R2-D2                 32     96 Droid   none  
+ 4 Darth Vader          136    202 Human   male  
+ 5 Leia Organa           49    150 Human   female
+ 6 Owen Lars            120    178 Human   male  
+ 7 Beru Whitesun Lars    75    165 Human   female
+ 8 R5-D4                 32     97 Droid   none  
+ 9 Biggs Darklighter     84    183 Human   male  
+10 Obi-Wan Kenobi        77    182 Human   male  
 # ℹ 77 more rows
 ```
 ]
@@ -4967,7 +5377,7 @@ count: false
 .panel1-summarize-auto[
 
 ``` r
-ds &lt;- starwars %&gt;% select(name, mass, height, species)
+ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
 ds %&gt;% summarize(min_height = min(height))
 ds %&gt;% summarize(min_height = min(height, na.rm = T))
 
@@ -4975,7 +5385,7 @@ ds %&gt;% summarize(min_height = min(height, na.rm = T),
                  m_height = mean(height, na.rm = T),
                  max_height = max(height, na.rm = T))
 
-ds %&gt;% group_by(species) %&gt;%
+ds %&gt;% group_by(species, sex) %&gt;%
 * summarize(min_height = min(height, na.rm = T),
 *                m_height = mean(height, na.rm = T),
 *                max_height = max(height, na.rm = T),
@@ -5007,20 +5417,84 @@ ds %&gt;% group_by(species) %&gt;%
 ```
 
 ```
-# A tibble: 38 × 5
-   species   min_height m_height max_height     n
-   &lt;chr&gt;          &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;
- 1 Aleena            79      79          79     1
- 2 Besalisk         198     198         198     1
- 3 Cerean           198     198         198     1
- 4 Chagrian         196     196         196     1
- 5 Clawdite         168     168         168     1
- 6 Droid             96     131.        200     6
- 7 Dug              112     112         112     1
- 8 Ewok              88      88          88     1
- 9 Geonosian        183     183         183     1
-10 Gungan           196     209.        224     3
-# ℹ 28 more rows
+# A tibble: 41 × 6
+# Groups:   species [38]
+   species   sex    min_height m_height max_height     n
+   &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;
+ 1 Aleena    male           79      79          79     1
+ 2 Besalisk  male          198     198         198     1
+ 3 Cerean    male          198     198         198     1
+ 4 Chagrian  male          196     196         196     1
+ 5 Clawdite  female        168     168         168     1
+ 6 Droid     none           96     131.        200     6
+ 7 Dug       male          112     112         112     1
+ 8 Ewok      male           88      88          88     1
+ 9 Geonosian male          183     183         183     1
+10 Gungan    male          196     209.        224     3
+# ℹ 31 more rows
+```
+]
+
+---
+count: false
+ 
+# Summarize (calculate variables in aggregate)
+.panel1-summarize-auto[
+
+``` r
+ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
+ds %&gt;% summarize(min_height = min(height))
+ds %&gt;% summarize(min_height = min(height, na.rm = T))
+
+ds %&gt;% summarize(min_height = min(height, na.rm = T),
+                 m_height = mean(height, na.rm = T),
+                 max_height = max(height, na.rm = T))
+
+ds %&gt;% group_by(species, sex) %&gt;%
+  summarize(min_height = min(height, na.rm = T),
+                 m_height = mean(height, na.rm = T),
+                 max_height = max(height, na.rm = T),
+                 n = n()) %&gt;%
+* filter(n &gt; 1)
+```
+]
+ 
+.panel2-summarize-auto[
+
+```
+# A tibble: 1 × 1
+  min_height
+       &lt;int&gt;
+1         NA
+```
+
+```
+# A tibble: 1 × 1
+  min_height
+       &lt;int&gt;
+1         66
+```
+
+```
+# A tibble: 1 × 3
+  min_height m_height max_height
+       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt;
+1         66     175.        264
+```
+
+```
+# A tibble: 8 × 6
+# Groups:   species [7]
+  species  sex    min_height m_height max_height     n
+  &lt;chr&gt;    &lt;chr&gt;       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;
+1 Droid    none           96     131.        200     6
+2 Gungan   male          196     209.        224     3
+3 Human    female        150     164.        185     9
+4 Human    male          170     182.        202    26
+5 Mirialan female        166     168         170     2
+6 Wookiee  male          228     231         234     2
+7 Zabrak   male          171     173         175     2
+8 &lt;NA&gt;     &lt;NA&gt;          157     175         185     4
 ```
 ]
 
@@ -5053,6 +5527,339 @@ ds %&gt;% group_by(species) %&gt;%
 
 
 
+
+
+---
+count: false
+ 
+# Summarize  by group
+.panel1-group_by-auto[
+
+``` r
+*ds %&gt;% group_by(species, sex)
+```
+]
+ 
+.panel2-group_by-auto[
+
+```
+# A tibble: 87 × 5
+# Groups:   species, sex [41]
+   name                mass height species sex   
+   &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; 
+ 1 Luke Skywalker        77    172 Human   male  
+ 2 C-3PO                 75    167 Droid   none  
+ 3 R2-D2                 32     96 Droid   none  
+ 4 Darth Vader          136    202 Human   male  
+ 5 Leia Organa           49    150 Human   female
+ 6 Owen Lars            120    178 Human   male  
+ 7 Beru Whitesun Lars    75    165 Human   female
+ 8 R5-D4                 32     97 Droid   none  
+ 9 Biggs Darklighter     84    183 Human   male  
+10 Obi-Wan Kenobi        77    182 Human   male  
+# ℹ 77 more rows
+```
+]
+
+---
+count: false
+ 
+# Summarize  by group
+.panel1-group_by-auto[
+
+``` r
+ds %&gt;% group_by(species, sex) %&gt;%
+* summarize(min_height = min(height, na.rm = T),
+*                m_height = mean(height, na.rm = T),
+*                max_height = max(height, na.rm = T),
+*                n = n())
+```
+]
+ 
+.panel2-group_by-auto[
+
+```
+# A tibble: 41 × 6
+# Groups:   species [38]
+   species   sex    min_height m_height max_height     n
+   &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;
+ 1 Aleena    male           79      79          79     1
+ 2 Besalisk  male          198     198         198     1
+ 3 Cerean    male          198     198         198     1
+ 4 Chagrian  male          196     196         196     1
+ 5 Clawdite  female        168     168         168     1
+ 6 Droid     none           96     131.        200     6
+ 7 Dug       male          112     112         112     1
+ 8 Ewok      male           88      88          88     1
+ 9 Geonosian male          183     183         183     1
+10 Gungan    male          196     209.        224     3
+# ℹ 31 more rows
+```
+]
+
+---
+count: false
+ 
+# Summarize  by group
+.panel1-group_by-auto[
+
+``` r
+ds %&gt;% group_by(species, sex) %&gt;%
+  summarize(min_height = min(height, na.rm = T),
+                 m_height = mean(height, na.rm = T),
+                 max_height = max(height, na.rm = T),
+                 n = n()) %&gt;%
+* filter(n &gt; 1)
+```
+]
+ 
+.panel2-group_by-auto[
+
+```
+# A tibble: 8 × 6
+# Groups:   species [7]
+  species  sex    min_height m_height max_height     n
+  &lt;chr&gt;    &lt;chr&gt;       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;
+1 Droid    none           96     131.        200     6
+2 Gungan   male          196     209.        224     3
+3 Human    female        150     164.        185     9
+4 Human    male          170     182.        202    26
+5 Mirialan female        166     168         170     2
+6 Wookiee  male          228     231         234     2
+7 Zabrak   male          171     173         175     2
+8 &lt;NA&gt;     &lt;NA&gt;          157     175         185     4
+```
+]
+
+&lt;style&gt;
+.panel1-group_by-auto {
+  color: black;
+  width: 81.6666666666667%;
+  hight: 32%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-group_by-auto {
+  color: black;
+  width: 16.3333333333333%;
+  hight: 32%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-group_by-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+count: false
+ 
+# Pay attention to groups/variables following summarize
+.panel1-summarize_groups-rotate[
+
+``` r
+*ds %&gt;% group_by(species, sex) %&gt;% summarize(max_height = max(height, na.rm = T))
+```
+]
+ 
+.panel2-summarize_groups-rotate[
+
+```
+# A tibble: 41 × 3
+# Groups:   species [38]
+   species   sex    max_height
+   &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;
+ 1 Aleena    male           79
+ 2 Besalisk  male          198
+ 3 Cerean    male          198
+ 4 Chagrian  male          196
+ 5 Clawdite  female        168
+ 6 Droid     none          200
+ 7 Dug       male          112
+ 8 Ewok      male           88
+ 9 Geonosian male          183
+10 Gungan    male          224
+# ℹ 31 more rows
+```
+]
+
+---
+count: false
+ 
+# Pay attention to groups/variables following summarize
+.panel1-summarize_groups-rotate[
+
+``` r
+*ds %&gt;% group_by(species, sex) %&gt;% summarize(max_height = max(height, na.rm = T)) %&gt;% ungroup()
+```
+]
+ 
+.panel2-summarize_groups-rotate[
+
+```
+# A tibble: 41 × 3
+   species   sex    max_height
+   &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;
+ 1 Aleena    male           79
+ 2 Besalisk  male          198
+ 3 Cerean    male          198
+ 4 Chagrian  male          196
+ 5 Clawdite  female        168
+ 6 Droid     none          200
+ 7 Dug       male          112
+ 8 Ewok      male           88
+ 9 Geonosian male          183
+10 Gungan    male          224
+# ℹ 31 more rows
+```
+]
+
+---
+count: false
+ 
+# Pay attention to groups/variables following summarize
+.panel1-summarize_groups-rotate[
+
+``` r
+*ds %&gt;% group_by(species, sex) %&gt;% slice_max(height)
+```
+]
+ 
+.panel2-summarize_groups-rotate[
+
+```
+# A tibble: 41 × 5
+# Groups:   species, sex [41]
+   name                   mass height species   sex   
+   &lt;chr&gt;                 &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; 
+ 1 Ratts Tyerel             15     79 Aleena    male  
+ 2 Dexter Jettster         102    198 Besalisk  male  
+ 3 Ki-Adi-Mundi             82    198 Cerean    male  
+ 4 Mas Amedda               NA    196 Chagrian  male  
+ 5 Zam Wesell               55    168 Clawdite  female
+ 6 IG-88                   140    200 Droid     none  
+ 7 Sebulba                  40    112 Dug       male  
+ 8 Wicket Systri Warrick    20     88 Ewok      male  
+ 9 Poggle the Lesser        80    183 Geonosian male  
+10 Roos Tarpals             82    224 Gungan    male  
+# ℹ 31 more rows
+```
+]
+
+&lt;style&gt;
+.panel1-summarize_groups-rotate {
+  color: black;
+  width: 81.6666666666667%;
+  hight: 32%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-summarize_groups-rotate {
+  color: black;
+  width: 16.3333333333333%;
+  hight: 32%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-summarize_groups-rotate {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: none;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+---
+# What gets tedious...
+
+
+``` r
+iris %&gt;% clean_names() %&gt;% 
+  group_by(species) %&gt;% 
+  summarize(sepal_length_mean = mean(sepal_length),
+            sepal_width_mean = mean(sepal_width),
+            petal_length_mean = mean(petal_length),
+            petal_width_mean = mean(petal_length))
+```
+
+```
+# A tibble: 3 × 5
+  species  sepal_length_mean sepal_width_mean petal_length_mean petal_width_mean
+  &lt;fct&gt;                &lt;dbl&gt;            &lt;dbl&gt;             &lt;dbl&gt;            &lt;dbl&gt;
+1 setosa                5.01             3.43              1.46             1.46
+2 versico…              5.94             2.77              4.26             4.26
+3 virgini…              6.59             2.97              5.55             5.55
+```
+---
+# Instead, use `across`
+
+
+``` r
+iris %&gt;% clean_names() %&gt;% 
+  group_by(species) %&gt;% 
+  summarize(across(everything(), mean, .names = "{.col}_mean"))
+```
+
+```
+# A tibble: 3 × 5
+  species  sepal_length_mean sepal_width_mean petal_length_mean petal_width_mean
+  &lt;fct&gt;                &lt;dbl&gt;            &lt;dbl&gt;             &lt;dbl&gt;            &lt;dbl&gt;
+1 setosa                5.01             3.43              1.46            0.246
+2 versico…              5.94             2.77              4.26            1.33 
+3 virgini…              6.59             2.97              5.55            2.03 
+```
+---
+# Instead, use `across`
+
+
+``` r
+iris %&gt;% clean_names() %&gt;% 
+  group_by(species) %&gt;% 
+  summarize(across(ends_with("length"), list(mean = mean, sd = sd)))
+```
+
+```
+# A tibble: 3 × 5
+  species    sepal_length_mean sepal_length_sd petal_length_mean petal_length_sd
+  &lt;fct&gt;                  &lt;dbl&gt;           &lt;dbl&gt;             &lt;dbl&gt;           &lt;dbl&gt;
+1 setosa                  5.01           0.352              1.46           0.174
+2 versicolor              5.94           0.516              4.26           0.470
+3 virginica               6.59           0.636              5.55           0.552
+```
+
+
+---
+# Data transformation homework assignment
+
+- Use the GitHub repo link below to fork and then clone the project to your own user account and then to work locally on your own computer.
+
+- Be sure you are using R version &gt;= 4.0 
+
+- The homework will make sure you learned what we covered, and will also ask you to try out new things to extend your knowledge
+
+- Push your answers to a public Github repo, and turn in the homework by entering the link to the repo on Canvas
+
+.content-box-blue[
+&lt;svg viewBox="0 0 496 512" style="height:1em;display:inline-block;vertical-align:-.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; Homework [Github repo](https://github.com/2026-PSYC-259/3-data-transformations-hw)
+]
 
 
 &lt;!-- adjust font size and other formatting defs in this css code chunk --&gt;

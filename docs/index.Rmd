@@ -273,7 +273,7 @@ starwars[4,]
 ```
 
 ---
-`r chunk_reveal("slice", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Slice (subsetting rows by position)")`
+`r chunk_reveal("slice", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Slice (other kinds of subsets)")`
 
 ```{r slice, include = FALSE}
 slice(ds, 1:5) #ROTATE
@@ -393,19 +393,23 @@ iris %>% rename(sepal_length = Sepal.Length, sepal_width = Sepal.Width, petal_le
 iris %>% rename_with(toupper) #ROTATE
 iris %>% rename_with(tolower, starts_with("Petal")) #ROTATE
 ```
+---
+`r chunk_reveal("rename_lookup", break_type = "auto", float = "none", widths = c(5, 1), title = "# Rename columns with a lookup table")`
+
+```{r rename_lookup, include = FALSE}
+lookup <- c(pet_length = "Petal.Length", pet_width = "Petal.Width",
+            sep_length = "Sepal.Length", sep_width = "Sepal.Width")
+iris %>% rename(all_of(lookup))
+```
 
 ---
-`r chunk_reveal("janitor", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Rename columns")`
+`r chunk_reveal("janitor", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Rename columns with janitor")`
 
-```{r rename, include = FALSE}
+```{r janitor, include = FALSE}
 library(janitor)
-iris_ex <- iris 
-iris_ex$Site.ID = "Gaspe Peninsula"
-iris_ex #ROTATE
-iris_ex %>% clean_names() #ROTATE
-iris_ex %>% clean_names("lower_camel") #ROTATE
-iris_ex %>% clean_names("title") #ROTATE
-iris_ex %>% clean_names("title", abbreviations = c("ID")) #ROTATE
+iris %>% clean_names() #ROTATE
+iris %>% clean_names("lower_camel") #ROTATE
+iris %>% clean_names("title") #ROTATE
 ```
 
 ---
@@ -453,7 +457,7 @@ ds <- ds %>% mutate(height = ifelse(height > 100,100, height))
 `r chunk_reveal("summarize", break_type = "auto", widths = c(1.2, 1), title = "# Summarize (calculate variables in aggregate)")`
 
 ```{r summarize, include = FALSE}
-ds <- starwars %>% select(name, mass, height, species)
+ds <- starwars %>% select(name, mass, height, species, sex)
 ds %>% summarize(min_height = min(height))
 ds %>% summarize(min_height = min(height, na.rm = T))
 
@@ -461,15 +465,65 @@ ds %>% summarize(min_height = min(height, na.rm = T),
                  m_height = mean(height, na.rm = T),
                  max_height = max(height, na.rm = T))
 
-ds %>% group_by(species) %>% 
+ds %>% group_by(species, sex) %>% 
   summarize(min_height = min(height, na.rm = T),
                  m_height = mean(height, na.rm = T),
                  max_height = max(height, na.rm = T),
-                 n = n())
+                 n = n()) %>% 
+  filter(n > 1)
 ```
 
 ---
-# Data Transformation Homework Assignment
+`r chunk_reveal("group_by", break_type = "auto", float = "none", widths = c(5, 1), title = "# Summarize  by group")`
+
+```{r group_by, include = FALSE}
+ds %>% group_by(species, sex) %>% 
+  summarize(min_height = min(height, na.rm = T),
+                 m_height = mean(height, na.rm = T),
+                 max_height = max(height, na.rm = T),
+                 n = n()) %>% 
+  filter(n > 1)
+```
+
+---
+`r chunk_reveal("summarize_groups", break_type = "rotate", float = "none", widths = c(5, 1),  title = "# Pay attention to groups/variables following summarize")`
+
+```{r summarize_groups, include = FALSE}
+ds %>% group_by(species, sex) %>% summarize(max_height = max(height, na.rm = T)) #ROTATE
+ds %>% group_by(species, sex) %>% summarize(max_height = max(height, na.rm = T)) %>% ungroup() #ROTATE
+ds %>% group_by(species, sex) %>% slice_max(height) #ROTATE
+```
+---
+# What gets tedious...
+
+```{r}
+iris %>% clean_names() %>% 
+  group_by(species) %>% 
+  summarize(sepal_length_mean = mean(sepal_length),
+            sepal_width_mean = mean(sepal_width),
+            petal_length_mean = mean(petal_length),
+            petal_width_mean = mean(petal_length))
+```
+---
+# Instead, use across()
+
+```{r}
+iris %>% clean_names() %>% 
+  group_by(species) %>% 
+  summarize(across(everything(), mean, .names = "{.col}_mean"))
+```
+---
+# Instead, use across()
+
+```{r}
+iris %>% clean_names() %>% 
+  group_by(species) %>% 
+  summarize(across(ends_with("length"), list(mean = mean, sd = sd)))
+```
+
+
+---
+# Data transformation homework assignment
 
 - Use the GitHub repo link below to fork and then clone the project to your own user account and then to work locally on your own computer.
 
