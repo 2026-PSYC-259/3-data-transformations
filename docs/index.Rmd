@@ -18,6 +18,17 @@ output:
 xaringanExtra::use_xaringan_extra(c("tile_view","broadcast"))
 ```
 
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 # Set up custom theme
 library(xaringanthemer)
@@ -57,10 +68,10 @@ class: inverse, center, middle
 ---
 # How can R data processing help us minimize mistakes?
 - Code *is* documentation
-- Transform data with less human intervention (e.g., `read_tsv()` in the homework)
+- Handle data with less human intervention (e.g., `read_tsv()` in the homework)
 - But coding errors are also common...what can we do to make sure that our code works?
-  * Write code that's reproducible (avoiding absolute file paths)
-  * Use code to help clean up variable names to make them human-readable
+  * Write reproducible code (avoiding absolute file paths)
+  * Use code to clean up variable names to make them human-readable
   * Instead of “hard” coding based on position (such as ds[1, 2]), filter and select by name and logical conditions
   * Reduce code duplication (copy-paste-tweak) with loops and functions
   
@@ -70,17 +81,15 @@ class: inverse, center, middle
 - Part 1:
   * Data types and classes in R
   * Logical statements
-
 - Part 2: Introduction to *dplyr*
-
 - Part 3: Code style
 
-<br />
- 
 .content-box-blue[
-`r icons::fontawesome("github")` Follow along from the [Github repo](https://github.com/psych-259-data-science-2026/3-data-transformations)
+`r icons::fontawesome("github")` Follow along from the [Github repo](https://github.com/2026-PSYC-259/3-data-transformations)
 ]
+
 <br />
+
 .footnote[.small[.bold[Last updated: `r Sys.Date()`]]]
 
 ---
@@ -106,24 +115,26 @@ class: inverse, center, middle
   
 - Character type/class: “hello”
 
-- Logical type: T/F (TRUE/FALSE)
+- Logical type/class: T/F (TRUE/FALSE)
 
 - Datetime class (type is double)
 
 - Factor class (type is integer)
 
-- Use `typeof()`, `class()`, `str()`, and `glimpse()` to check the types/classes
-
 ---
 # Functions to test and convert types
+
+- Inspect the type/class
+  * `typeof()`, `class()`, and `str()`
+  * `dplyr::glimpse()` for data frames
+    
+- Test if something is a particular class
+  * `is.numeric()`, `is.character()`
+  * returns a logical (T/F)
 
 - Take a value and convert it into a different class
   * `as.numeric(x)`, `as.character(x)`, `as.date(x)`
   * returns a typed/classed version of x
-
-- Check if something is a particular class
-  * `is.numeric()`, `is.character()`
-  * returns a logical (T/F)
 
 ---
 `r chunk_reveal("types", break_type = "auto", widths = c(2, 1), title = "# Data types")`
@@ -142,7 +153,7 @@ typeof(x)
 is.numeric(x)
 is.character(x)
 as.numeric(x)
-#x + ", World"
+try(x + ", World")
 paste0(x, ", World")
 ```
 
@@ -165,41 +176,22 @@ paste0(x, ", World")
 # Built-in logical comparison functions
 
 - Comparisons between values that result in TRUE/FALSE
-  * Greater than/less than (>, >=, <, <=)
-  * Equals (==)
-  * Not equals (!=)
-  * Not (!)
-  * And (&)
-  * Or (|)
-  * %in%
 
----
-`r chunk_reveal("logical", break_type = "auto", widths = c(2, 1), title = "# Logical comparisons")`
-
-```{r logical, include = FALSE}
-x <- 1
-x > 0
-x > 2
-x == 1
-x != 2
-!(x == x)
-"s" == "S"
-1 > 0 | 0 > 1
-1 > 0 & 0 > 1
-
-# Element-wise logical statements
-x <- c(-1, 0, 1)
-x < 0
-x == 0
-
-# Quickly test is a value is contained in a set
-1 %in% x
-```
+| Function              | Operator              | Example |
+| --------              | --------              | -------- |
+| Numerical comparison  | `>`, `>=`, `<`, `<=`  | `0 < 1`   |
+| Equals                | `==`                  | `1 == 1` |
+| Not equals            | `!=`                  | `1 != 2` |
+| And                   | `&`                   |`1 > 0 & 0 > 1`|
+| Or                    | &#124;                |1 > 0 &#124; 0 > 1|
+| Not                   | `!`                   |`!(1 > 0 & 0 > 1)`|
+| Matching              |`%in%`                 |`1 %in% c(-1, 0, 1)`|
 
 ---
 # How do we use logical statements?
 
-- One common way is through the `ifelse()` command?
+- Subsetting logic (filtering, selecting)
+- Through the `ifelse()` command
 
 - `ifelse(LOGICAL STATEMENT, DO IF TRUE, DO IF FALSE)`
 

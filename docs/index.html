@@ -12,6 +12,12 @@
     <script src="libs/tiny.toast-1.0.0/toast.min.js"></script>
     <link href="libs/xaringanExtra-broadcast-0.2.6/broadcast.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-broadcast-0.2.6/broadcast.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -36,16 +42,18 @@ class: center, middle, inverse, title-slide
 
 
 
+
+
 class: inverse, center, middle
 # How does R data processing help to minimize mistakes?
 
 ---
 # How can R data processing help us minimize mistakes?
 - Code *is* documentation
-- Transform data with less human intervention (e.g., `read_tsv()` in the homework)
+- Handle data with less human intervention (e.g., `read_tsv()` in the homework)
 - But coding errors are also common...what can we do to make sure that our code works?
-  * Write code that's reproducible (avoiding absolute file paths)
-  * Use code to help clean up variable names to make them human-readable
+  * Write reproducible code (avoiding absolute file paths)
+  * Use code to clean up variable names to make them human-readable
   * Instead of “hard” coding based on position (such as ds[1, 2]), filter and select by name and logical conditions
   * Reduce code duplication (copy-paste-tweak) with loops and functions
   
@@ -55,18 +63,16 @@ class: inverse, center, middle
 - Part 1:
   * Data types and classes in R
   * Logical statements
-
 - Part 2: Introduction to *dplyr*
-
 - Part 3: Code style
 
-&lt;br /&gt;
- 
 .content-box-blue[
-&lt;svg viewBox="0 0 496 512" style="height:1em;display:inline-block;vertical-align:-.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; Follow along from the [Github repo](https://github.com/psych-259-data-science-2026/3-data-transformations)
+&lt;svg viewBox="0 0 496 512" style="height:1em;display:inline-block;vertical-align:-.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; Follow along from the [Github repo](https://github.com/2026-PSYC-259/3-data-transformations)
 ]
+
 &lt;br /&gt;
-.footnote[.small[.bold[Last updated: 2026-10-06]]]
+
+.footnote[.small[.bold[Last updated: 2026-10-08]]]
 
 ---
 class: inverse, center, middle
@@ -91,24 +97,26 @@ class: inverse, center, middle
   
 - Character type/class: “hello”
 
-- Logical type: T/F (TRUE/FALSE)
+- Logical type/class: T/F (TRUE/FALSE)
 
 - Datetime class (type is double)
 
 - Factor class (type is integer)
 
-- Use `typeof()`, `class()`, `str()`, and `glimpse()` to check the types/classes
-
 ---
 # Functions to test and convert types
+
+- Inspect the type/class
+  * `typeof()`, `class()`, and `str()`
+  * `dplyr::glimpse()` for data frames
+    
+- Test if something is a particular class
+  * `is.numeric()`, `is.character()`
+  * returns a logical (T/F)
 
 - Take a value and convert it into a different class
   * `as.numeric(x)`, `as.character(x)`, `as.date(x)`
   * returns a typed/classed version of x
-
-- Check if something is a particular class
-  * `is.numeric()`, `is.character()`
-  * returns a logical (T/F)
 
 ---
 count: false
@@ -614,7 +622,7 @@ typeof(x)
 is.numeric(x)
 is.character(x)
 as.numeric(x)
-*#x + ", World"  #x + ", World"
+*try(x + ", World")
 ```
 ]
  
@@ -659,6 +667,10 @@ as.numeric(x)
 ```
 [1] NA
 ```
+
+```
+Error in x + ", World" : non-numeric argument to binary operator
+```
 ]
 
 ---
@@ -681,7 +693,7 @@ typeof(x)
 is.numeric(x)
 is.character(x)
 as.numeric(x)
-#x + ", World"  #x + ", World"
+try(x + ", World")
 *paste0(x, ", World")
 ```
 ]
@@ -726,6 +738,10 @@ as.numeric(x)
 
 ```
 [1] NA
+```
+
+```
+Error in x + ", World" : non-numeric argument to binary operator
 ```
 
 ```
@@ -783,616 +799,22 @@ as.numeric(x)
 # Built-in logical comparison functions
 
 - Comparisons between values that result in TRUE/FALSE
-  * Greater than/less than (&gt;, &gt;=, &lt;, &lt;=)
-  * Equals (==)
-  * Not equals (!=)
-  * Not (!)
-  * And (&amp;)
-  * Or (|)
-  * %in%
 
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-*x &lt;- 1
-```
-]
- 
-.panel2-logical-auto[
-
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-*x &gt; 0
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-*x &gt; 2
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-*x == 1
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-*x != 2
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-x != 2
-*!(x == x)
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-x != 2
-!(x == x)
-*"s" == "S"
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] FALSE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-x != 2
-!(x == x)
-"s" == "S"
-*1 &gt; 0 | 0 &gt; 1
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-x != 2
-!(x == x)
-"s" == "S"
-1 &gt; 0 | 0 &gt; 1
-*1 &gt; 0 &amp; 0 &gt; 1
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-x != 2
-!(x == x)
-"s" == "S"
-1 &gt; 0 | 0 &gt; 1
-1 &gt; 0 &amp; 0 &gt; 1
-
-# Element-wise logical statements
-*x &lt;- c(-1, 0, 1)
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-x != 2
-!(x == x)
-"s" == "S"
-1 &gt; 0 | 0 &gt; 1
-1 &gt; 0 &amp; 0 &gt; 1
-
-# Element-wise logical statements
-x &lt;- c(-1, 0, 1)
-*x &lt; 0
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1]  TRUE FALSE FALSE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-x != 2
-!(x == x)
-"s" == "S"
-1 &gt; 0 | 0 &gt; 1
-1 &gt; 0 &amp; 0 &gt; 1
-
-# Element-wise logical statements
-x &lt;- c(-1, 0, 1)
-x &lt; 0
-*x == 0
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1]  TRUE FALSE FALSE
-```
-
-```
-[1] FALSE  TRUE FALSE
-```
-]
-
----
-count: false
- 
-# Logical comparisons
-.panel1-logical-auto[
-
-``` r
-x &lt;- 1
-x &gt; 0
-x &gt; 2
-x == 1
-x != 2
-!(x == x)
-"s" == "S"
-1 &gt; 0 | 0 &gt; 1
-1 &gt; 0 &amp; 0 &gt; 1
-
-# Element-wise logical statements
-x &lt;- c(-1, 0, 1)
-x &lt; 0
-x == 0
-
-# Quickly test is a value is contained in a set
-*1 %in% x
-```
-]
- 
-.panel2-logical-auto[
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1]  TRUE FALSE FALSE
-```
-
-```
-[1] FALSE  TRUE FALSE
-```
-
-```
-[1] TRUE
-```
-]
-
-&lt;style&gt;
-.panel1-logical-auto {
-  color: black;
-  width: 65.3333333333333%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel2-logical-auto {
-  color: black;
-  width: 32.6666666666667%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel3-logical-auto {
-  color: black;
-  width: NA%;
-  hight: 33%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-&lt;/style&gt;
-
-
-
-
+| Function              | Operator              | Example |
+| --------              | --------              | -------- |
+| Numerical comparison  | `&gt;`, `&gt;=`, `&lt;`, `&lt;=`  | `0 &lt; 1`   |
+| Equals                | `==`                  | `1 == 1` |
+| Not equals            | `!=`                  | `1 != 2` |
+| And                   | `&amp;`                   |`1 &gt; 0 &amp; 0 &gt; 1`|
+| Or                    | &amp;#124;                |1 &gt; 0 &amp;#124; 0 &gt; 1|
+| Not                   | `!`                   |`!(1 &gt; 0 &amp; 0 &gt; 1)`|
+| Matching              |`%in%`                 |`1 %in% c(-1, 0, 1)`|
 
 ---
 # How do we use logical statements?
 
-- One common way is through the `ifelse()` command?
+- Subsetting logic (filtering, selecting)
+- Through the `ifelse()` command
 
 - `ifelse(LOGICAL STATEMENT, DO IF TRUE, DO IF FALSE)`
 
@@ -1977,8 +1399,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Beru Whi…    165    75 brown      light      blue              47 fema… femin…
-2 Bail Pre…    191    NA black      tan        brown             67 male  mascu…
+1 Ayla Sec…    178    55 none       blue       hazel             48 fema… femin…
+2 Captain …     NA    NA none       none       unknown           NA fema… femin…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -2001,8 +1423,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Poe Dame…     NA    NA brown      light      brown             NA male  mascu…
-2 Cordé        157    NA brown      light      brown             NA &lt;NA&gt;  &lt;NA&gt;  
+1 Jek Tono…    180 110   brown      fair       blue            NA   &lt;NA&gt;  &lt;NA&gt;  
+2 Boba Fett    183  78.2 black      fair       brown           31.5 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
