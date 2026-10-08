@@ -44,7 +44,7 @@ class: center, middle, inverse, title-slide
 
 
 
-class: inverse, center, middle
+class: center, middle
 # How does R data processing help to minimize mistakes?
 
 ---
@@ -815,8 +815,7 @@ Error in x + ", World" : non-numeric argument to binary operator
 
 - Subsetting logic (filtering, selecting)
 - Through the `ifelse()` command
-
-- `ifelse(LOGICAL STATEMENT, DO IF TRUE, DO IF FALSE)`
+  * `ifelse(LOGICAL STATEMENT, DO IF TRUE, DO IF FALSE)`
 
 
 ``` r
@@ -849,7 +848,7 @@ class: inverse, center, middle
   * `arrange()` to sort data by columns
   * `filter()`, `filter_out()` and `slice()` to subset data by rows
   * `select()` to subset data by columns
-  * `rename()` to rename columns
+  * `rename()` and `relocate()` to rename and move columns
   * `mutate()` to add or change columns (or their values)
   * `summarize()` to calculate summary statistics over rows of data
   * `group_by()` to perform operations within subsets of data
@@ -859,7 +858,7 @@ class: inverse, center, middle
 # Each dplyr function uses a similar structure
 - `function(data, something_to_do_with_columns)`
 
-- In base R, you need to specify the dataset over and over to subset: `ds[ds$col1 == 1, 0]`
+- In base R, you need to specify the dataset over and over to subset: `ds[ds$col1 == 1, ]`
 
 - In dplyr functions, the data argument lets you work with column names without using `$`. The data argument also lets you access the columns directly without using quoted expressions: `filter(data, col1 == 1)`
 
@@ -931,41 +930,6 @@ ds &lt;- starwars  #loads built-in star wars database
  8 Barriss…    166    50 black      yellow     blue            40   fema… femin…
  9 Ben Qua…    163    65 none       grey, gre… orange          NA   male  mascu…
 10 Beru Wh…    165    75 brown      light      blue            47   fema… femin…
-# ℹ 77 more rows
-# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
-#   vehicles &lt;list&gt;, starships &lt;list&gt;
-```
-]
-
----
-count: false
- 
-## Arrange (sorting data)
-.panel1-arrange-rotate[
-
-``` r
-library(tidyverse)  #loads dplyr
-ds &lt;- starwars  #loads built-in star wars database
-*arrange(ds, height)
-```
-]
- 
-.panel2-arrange-rotate[
-
-```
-# A tibble: 87 × 14
-   name     height  mass hair_color skin_color eye_color birth_year sex   gender
-   &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
- 1 Yoda         66    17 white      green      brown            896 male  mascu…
- 2 Ratts T…     79    15 none       grey, blue unknown           NA male  mascu…
- 3 Wicket …     88    20 brown      brown      brown              8 male  mascu…
- 4 Dud Bolt     94    45 none       blue, grey yellow            NA male  mascu…
- 5 R2-D2        96    32 &lt;NA&gt;       white, bl… red               33 none  mascu…
- 6 R4-P17       96    NA none       silver, r… red, blue         NA none  femin…
- 7 R5-D4        97    32 &lt;NA&gt;       white, red red               NA none  mascu…
- 8 Sebulba     112    40 none       grey, red  orange            NA male  mascu…
- 9 Gasgano     122    NA none       white, bl… black             NA male  mascu…
-10 Watto       137    NA black      blue, grey yellow            NA male  mascu…
 # ℹ 77 more rows
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
@@ -1074,33 +1038,9 @@ ds &lt;- starwars  #loads built-in star wars database
 
 
 ---
-count: false
- 
-# Filter (subsetting rows)
-.panel1-filter-rotate[
+class: center, middle
+# What are some uses of arrange()?
 
-``` r
-*filter(ds, height &lt; 100)
-```
-]
- 
-.panel2-filter-rotate[
-
-```
-# A tibble: 7 × 14
-  name      height  mass hair_color skin_color eye_color birth_year sex   gender
-  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 R2-D2         96    32 &lt;NA&gt;       white, bl… red               33 none  mascu…
-2 R5-D4         97    32 &lt;NA&gt;       white, red red               NA none  mascu…
-3 Yoda          66    17 white      green      brown            896 male  mascu…
-4 Wicket S…     88    20 brown      brown      brown              8 male  mascu…
-5 Ratts Ty…     79    15 none       grey, blue unknown           NA male  mascu…
-6 Dud Bolt      94    45 none       blue, grey yellow            NA male  mascu…
-7 R4-P17        96    NA none       silver, r… red, blue         NA none  femin…
-# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
-#   vehicles &lt;list&gt;, starships &lt;list&gt;
-```
-]
 
 ---
 count: false
@@ -1243,6 +1183,70 @@ count: false
 ```
 ]
 
+---
+count: false
+ 
+# Filter (subsetting rows)
+.panel1-filter-rotate[
+
+``` r
+*filter(ds, height &lt; 100)
+```
+]
+ 
+.panel2-filter-rotate[
+
+```
+# A tibble: 7 × 14
+  name      height  mass hair_color skin_color eye_color birth_year sex   gender
+  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+1 R2-D2         96    32 &lt;NA&gt;       white, bl… red               33 none  mascu…
+2 R5-D4         97    32 &lt;NA&gt;       white, red red               NA none  mascu…
+3 Yoda          66    17 white      green      brown            896 male  mascu…
+4 Wicket S…     88    20 brown      brown      brown              8 male  mascu…
+5 Ratts Ty…     79    15 none       grey, blue unknown           NA male  mascu…
+6 Dud Bolt      94    45 none       blue, grey yellow            NA male  mascu…
+7 R4-P17        96    NA none       silver, r… red, blue         NA none  femin…
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+]
+
+---
+count: false
+ 
+# Filter (subsetting rows)
+.panel1-filter-rotate[
+
+``` r
+*filter_out(ds, height &gt;= 100)
+```
+]
+ 
+.panel2-filter-rotate[
+
+```
+# A tibble: 13 × 14
+   name     height  mass hair_color skin_color eye_color birth_year sex   gender
+   &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+ 1 R2-D2        96    32 &lt;NA&gt;       white, bl… red               33 none  mascu…
+ 2 R5-D4        97    32 &lt;NA&gt;       white, red red               NA none  mascu…
+ 3 Yoda         66    17 white      green      brown            896 male  mascu…
+ 4 Arvel C…     NA    NA brown      fair       brown             NA male  mascu…
+ 5 Wicket …     88    20 brown      brown      brown              8 male  mascu…
+ 6 Ratts T…     79    15 none       grey, blue unknown           NA male  mascu…
+ 7 Dud Bolt     94    45 none       blue, grey yellow            NA male  mascu…
+ 8 R4-P17       96    NA none       silver, r… red, blue         NA none  femin…
+ 9 Finn         NA    NA black      dark       dark              NA male  mascu…
+10 Rey          NA    NA brown      light      hazel             NA fema… femin…
+11 Poe Dam…     NA    NA brown      light      brown             NA male  mascu…
+12 BB8          NA    NA none       none       black             NA none  mascu…
+13 Captain…     NA    NA none       none       unknown           NA fema… femin…
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+]
+
 &lt;style&gt;
 .panel1-filter-rotate {
   color: black;
@@ -1272,6 +1276,11 @@ count: false
 
 
 
+
+
+---
+class: center, middle
+# Why do `filter(height &lt; 100)` and `filter_out(height &gt;= 100)` return different results?
 
 ---
 # Why not subset based on position?
@@ -1309,21 +1318,22 @@ count: false
 .panel1-slice-rotate[
 
 ``` r
-*slice(ds, 1:5)
+*slice(ds, 10:15)
 ```
 ]
  
 .panel2-slice-rotate[
 
 ```
-# A tibble: 5 × 14
+# A tibble: 6 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Luke Sky…    172    77 blond      fair       blue            19   male  mascu…
-2 C-3PO        167    75 &lt;NA&gt;       gold       yellow         112   none  mascu…
-3 R2-D2         96    32 &lt;NA&gt;       white, bl… red             33   none  mascu…
-4 Darth Va…    202   136 none       white      yellow          41.9 male  mascu…
-5 Leia Org…    150    49 brown      light      brown           19   fema… femin…
+1 Obi-Wan …    182    77 auburn, w… fair       blue-gray       57   male  mascu…
+2 Anakin S…    188    84 blond      fair       blue            41.9 male  mascu…
+3 Wilhuff …    180    NA auburn, g… fair       blue            64   male  mascu…
+4 Chewbacca    228   112 brown      unknown    blue           200   male  mascu…
+5 Han Solo     180    80 brown      fair       brown           29   male  mascu…
+6 Greedo       173    74 &lt;NA&gt;       green      black           44   male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -1363,68 +1373,69 @@ count: false
 .panel1-slice-rotate[
 
 ``` r
-*slice_tail(ds, n = 4)
+*slice_tail(ds, n = 5)
 ```
 ]
  
 .panel2-slice-rotate[
 
 ```
-# A tibble: 4 × 14
+# A tibble: 5 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Rey           NA    NA brown      light      hazel             NA fema… femin…
+1 Finn          NA    NA black      dark       dark              NA male  mascu…
+2 Rey           NA    NA brown      light      hazel             NA fema… femin…
+3 Poe Dame…     NA    NA brown      light      brown             NA male  mascu…
+4 BB8           NA    NA none       none       black             NA none  mascu…
+5 Captain …     NA    NA none       none       unknown           NA fema… femin…
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+]
+
+---
+count: false
+ 
+# Slice (other kinds of subsets)
+.panel1-slice-rotate[
+
+``` r
+*slice_sample(ds, n = 2)
+```
+]
+ 
+.panel2-slice-rotate[
+
+```
+# A tibble: 2 × 14
+  name      height  mass hair_color skin_color eye_color birth_year sex   gender
+  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+1 Leia Org…    150    49 brown      light      brown             19 fema… femin…
+2 Barriss …    166    50 black      yellow     blue              40 fema… femin…
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+]
+
+---
+count: false
+ 
+# Slice (other kinds of subsets)
+.panel1-slice-rotate[
+
+``` r
+*slice_sample(ds, n = 2)
+```
+]
+ 
+.panel2-slice-rotate[
+
+```
+# A tibble: 2 × 14
+  name      height  mass hair_color skin_color eye_color birth_year sex   gender
+  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+1 Darth Ma…    175    80 none       red        yellow            54 male  mascu…
 2 Poe Dame…     NA    NA brown      light      brown             NA male  mascu…
-3 BB8           NA    NA none       none       black             NA none  mascu…
-4 Captain …     NA    NA none       none       unknown           NA fema… femin…
-# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
-#   vehicles &lt;list&gt;, starships &lt;list&gt;
-```
-]
-
----
-count: false
- 
-# Slice (other kinds of subsets)
-.panel1-slice-rotate[
-
-``` r
-*slice_sample(ds, n = 2)
-```
-]
- 
-.panel2-slice-rotate[
-
-```
-# A tibble: 2 × 14
-  name      height  mass hair_color skin_color eye_color birth_year sex   gender
-  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Ayla Sec…    178    55 none       blue       hazel             48 fema… femin…
-2 Captain …     NA    NA none       none       unknown           NA fema… femin…
-# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
-#   vehicles &lt;list&gt;, starships &lt;list&gt;
-```
-]
-
----
-count: false
- 
-# Slice (other kinds of subsets)
-.panel1-slice-rotate[
-
-``` r
-*slice_sample(ds, n = 2)
-```
-]
- 
-.panel2-slice-rotate[
-
-```
-# A tibble: 2 × 14
-  name      height  mass hair_color skin_color eye_color birth_year sex   gender
-  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Jek Tono…    180 110   brown      fair       blue            NA   &lt;NA&gt;  &lt;NA&gt;  
-2 Boba Fett    183  78.2 black      fair       brown           31.5 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -1485,37 +1496,6 @@ count: false
 
 
 
-
----
-count: false
- 
-# Select (subsetting columns)
-.panel1-select-rotate[
-
-``` r
-*select(ds, name)
-```
-]
- 
-.panel2-select-rotate[
-
-```
-# A tibble: 87 × 1
-   name              
-   &lt;chr&gt;             
- 1 Luke Skywalker    
- 2 C-3PO             
- 3 R2-D2             
- 4 Darth Vader       
- 5 Leia Organa       
- 6 Owen Lars         
- 7 Beru Whitesun Lars
- 8 R5-D4             
- 9 Biggs Darklighter 
-10 Obi-Wan Kenobi    
-# ℹ 77 more rows
-```
-]
 
 ---
 count: false
@@ -2275,7 +2255,7 @@ ds
 ---
 count: false
  
-# Not a good strategy
+# Why isn't this a good strategy?
 .panel1-intermed-auto[
 
 ``` r
@@ -2290,7 +2270,7 @@ count: false
 ---
 count: false
  
-# Not a good strategy
+# Why isn't this a good strategy?
 .panel1-intermed-auto[
 
 ``` r
@@ -2306,7 +2286,7 @@ ds &lt;- starwars
 ---
 count: false
  
-# Not a good strategy
+# Why isn't this a good strategy?
 .panel1-intermed-auto[
 
 ``` r
@@ -2323,7 +2303,7 @@ ds_name_height_eye_color &lt;- select(ds, name, height, eye_color)
 ---
 count: false
  
-# Not a good strategy
+# Why isn't this a good strategy?
 .panel1-intermed-auto[
 
 ``` r
@@ -2341,7 +2321,7 @@ ds_sorted &lt;- arrange(ds_name_height_eye_color, height, eye_color)
 ---
 count: false
  
-# Not a good strategy
+# Why isn't this a good strategy?
 .panel1-intermed-auto[
 
 ``` r
@@ -4308,6 +4288,10 @@ library(janitor)
 
 
 ---
+class: center, middle
+# What are the advantages/disadvantages of using a function to automatically rename your variables?
+
+---
 # Mutate and summarize
 
 - Mutate adds/modifies columns; dataset remains the same size
@@ -4748,195 +4732,6 @@ ds %&gt;% summarize(min_height = min(height, na.rm = T))
   min_height m_height max_height
        &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt;
 1         66     175.        264
-```
-]
-
----
-count: false
- 
-# Summarize (calculate variables in aggregate)
-.panel1-summarize-auto[
-
-``` r
-ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
-ds %&gt;% summarize(min_height = min(height))
-ds %&gt;% summarize(min_height = min(height, na.rm = T))
-
-ds %&gt;% summarize(min_height = min(height, na.rm = T),
-                 m_height = mean(height, na.rm = T),
-                 max_height = max(height, na.rm = T))
-
-*ds %&gt;% group_by(species, sex)
-```
-]
- 
-.panel2-summarize-auto[
-
-```
-# A tibble: 1 × 1
-  min_height
-       &lt;int&gt;
-1         NA
-```
-
-```
-# A tibble: 1 × 1
-  min_height
-       &lt;int&gt;
-1         66
-```
-
-```
-# A tibble: 1 × 3
-  min_height m_height max_height
-       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt;
-1         66     175.        264
-```
-
-```
-# A tibble: 87 × 5
-# Groups:   species, sex [41]
-   name                mass height species sex   
-   &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; 
- 1 Luke Skywalker        77    172 Human   male  
- 2 C-3PO                 75    167 Droid   none  
- 3 R2-D2                 32     96 Droid   none  
- 4 Darth Vader          136    202 Human   male  
- 5 Leia Organa           49    150 Human   female
- 6 Owen Lars            120    178 Human   male  
- 7 Beru Whitesun Lars    75    165 Human   female
- 8 R5-D4                 32     97 Droid   none  
- 9 Biggs Darklighter     84    183 Human   male  
-10 Obi-Wan Kenobi        77    182 Human   male  
-# ℹ 77 more rows
-```
-]
-
----
-count: false
- 
-# Summarize (calculate variables in aggregate)
-.panel1-summarize-auto[
-
-``` r
-ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
-ds %&gt;% summarize(min_height = min(height))
-ds %&gt;% summarize(min_height = min(height, na.rm = T))
-
-ds %&gt;% summarize(min_height = min(height, na.rm = T),
-                 m_height = mean(height, na.rm = T),
-                 max_height = max(height, na.rm = T))
-
-ds %&gt;% group_by(species, sex) %&gt;%
-* summarize(min_height = min(height, na.rm = T),
-*                m_height = mean(height, na.rm = T),
-*                max_height = max(height, na.rm = T),
-*                n = n())
-```
-]
- 
-.panel2-summarize-auto[
-
-```
-# A tibble: 1 × 1
-  min_height
-       &lt;int&gt;
-1         NA
-```
-
-```
-# A tibble: 1 × 1
-  min_height
-       &lt;int&gt;
-1         66
-```
-
-```
-# A tibble: 1 × 3
-  min_height m_height max_height
-       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt;
-1         66     175.        264
-```
-
-```
-# A tibble: 41 × 6
-# Groups:   species [38]
-   species   sex    min_height m_height max_height     n
-   &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;
- 1 Aleena    male           79      79          79     1
- 2 Besalisk  male          198     198         198     1
- 3 Cerean    male          198     198         198     1
- 4 Chagrian  male          196     196         196     1
- 5 Clawdite  female        168     168         168     1
- 6 Droid     none           96     131.        200     6
- 7 Dug       male          112     112         112     1
- 8 Ewok      male           88      88          88     1
- 9 Geonosian male          183     183         183     1
-10 Gungan    male          196     209.        224     3
-# ℹ 31 more rows
-```
-]
-
----
-count: false
- 
-# Summarize (calculate variables in aggregate)
-.panel1-summarize-auto[
-
-``` r
-ds &lt;- starwars %&gt;% select(name, mass, height, species, sex)
-ds %&gt;% summarize(min_height = min(height))
-ds %&gt;% summarize(min_height = min(height, na.rm = T))
-
-ds %&gt;% summarize(min_height = min(height, na.rm = T),
-                 m_height = mean(height, na.rm = T),
-                 max_height = max(height, na.rm = T))
-
-ds %&gt;% group_by(species, sex) %&gt;%
-  summarize(min_height = min(height, na.rm = T),
-                 m_height = mean(height, na.rm = T),
-                 max_height = max(height, na.rm = T),
-                 n = n()) %&gt;%
-* filter(n &gt; 1)
-```
-]
- 
-.panel2-summarize-auto[
-
-```
-# A tibble: 1 × 1
-  min_height
-       &lt;int&gt;
-1         NA
-```
-
-```
-# A tibble: 1 × 1
-  min_height
-       &lt;int&gt;
-1         66
-```
-
-```
-# A tibble: 1 × 3
-  min_height m_height max_height
-       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt;
-1         66     175.        264
-```
-
-```
-# A tibble: 8 × 6
-# Groups:   species [7]
-  species  sex    min_height m_height max_height     n
-  &lt;chr&gt;    &lt;chr&gt;       &lt;int&gt;    &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;
-1 Droid    none           96     131.        200     6
-2 Gungan   male          196     209.        224     3
-3 Human    female        150     164.        185     9
-4 Human    male          170     182.        202    26
-5 Mirialan female        166     168         170     2
-6 Wookiee  male          228     231         234     2
-7 Zabrak   male          171     173         175     2
-8 &lt;NA&gt;     &lt;NA&gt;          157     175         185     4
 ```
 ]
 

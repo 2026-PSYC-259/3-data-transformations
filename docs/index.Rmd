@@ -62,7 +62,7 @@ library(tidyverse)
 library(icons) #https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
 ```
 
-class: inverse, center, middle
+class: center, middle
 # How does R data processing help to minimize mistakes?
 
 ---
@@ -192,8 +192,7 @@ paste0(x, ", World")
 
 - Subsetting logic (filtering, selecting)
 - Through the `ifelse()` command
-
-- `ifelse(LOGICAL STATEMENT, DO IF TRUE, DO IF FALSE)`
+  * `ifelse(LOGICAL STATEMENT, DO IF TRUE, DO IF FALSE)`
 
 ```{r}
 x <- c(0, 1, 2, 3, NA)
@@ -215,7 +214,7 @@ class: inverse, center, middle
   * `arrange()` to sort data by columns
   * `filter()`, `filter_out()` and `slice()` to subset data by rows
   * `select()` to subset data by columns
-  * `rename()` to rename columns
+  * `rename()` and `relocate()` to rename and move columns
   * `mutate()` to add or change columns (or their values)
   * `summarize()` to calculate summary statistics over rows of data
   * `group_by()` to perform operations within subsets of data
@@ -225,7 +224,7 @@ class: inverse, center, middle
 # Each dplyr function uses a similar structure
 - `function(data, something_to_do_with_columns)`
 
-- In base R, you need to specify the dataset over and over to subset: `ds[ds$col1 == 1, 0]`
+- In base R, you need to specify the dataset over and over to subset: `ds[ds$col1 == 1, ]`
 
 - In dplyr functions, the data argument lets you work with column names without using `$`. The data argument also lets you access the columns directly without using quoted expressions: `filter(data, col1 == 1)`
 
@@ -241,22 +240,32 @@ library(tidyverse) #loads dplyr
 ds <- starwars #loads built-in star wars database
 glimpse(ds) #ROTATE
 arrange(ds, name) #ROTATE
-arrange(ds, height) #ROTATE
 arrange(ds, desc(height), mass) #ROTATE
 arrange(ds, eye_color, hair_color) #ROTATE
 ```
 
 ---
+class: center, middle
+# What are some uses of arrange()?
+
+
+---
 `r chunk_reveal("filter", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Filter (subsetting rows)")`
 
 ```{r filter, include = FALSE}
-filter(ds, height < 100) #ROTATE
 filter(ds, name == "Yoda") #ROTATE
 filter(ds, is.na(hair_color)) #ROTATE
 filter(ds, height > 100, height < 150) #ROTATE
 filter(ds, eye_color %in% c("blue","brown")) #ROTATE
 filter(ds, !(eye_color %in% c("blue","brown"))) #ROTATE
+filter(ds, height < 100) #ROTATE
+filter_out(ds, height >= 100) #ROTATE
 ```
+
+---
+class: center, middle
+# Why do `filter(height < 100)` and `filter_out(height >= 100)` return different results?
+
 ---
 # Why not subset based on position?
 ```{r}
@@ -268,9 +277,9 @@ starwars[4,]
 `r chunk_reveal("slice", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Slice (other kinds of subsets)")`
 
 ```{r slice, include = FALSE}
-slice(ds, 1:5) #ROTATE
+slice(ds, 10:15) #ROTATE
 slice_head(ds, n = 5) #ROTATE
-slice_tail(ds, n = 4) #ROTATE
+slice_tail(ds, n = 5) #ROTATE
 slice_sample(ds, n = 2) #ROTATE
 slice_sample(ds, n = 2) #ROTATE
 slice_min(ds, height, n = 3) #ROTATE
@@ -280,7 +289,6 @@ slice_min(ds, height, n = 3) #ROTATE
 `r chunk_reveal("select", break_type = "rotate", float = "none", widths = c(5, 1), title = "# Select (subsetting columns)")`
 
 ```{r select, include = FALSE}
-select(ds, name) #ROTATE
 select(ds, name, height, mass) #ROTATE
 select(ds, c("name", "height", "mass")) #ROTATE
 select(ds, name:eye_color) #ROTATE
@@ -327,7 +335,7 @@ ds <- filter(ds, height < 70)
 ```
 
 ---
-`r chunk_reveal("intermed", break_type = "auto", float = "none", widths = c(5, 1), title = "# Not a good strategy")`
+`r chunk_reveal("intermed", break_type = "auto", float = "none", widths = c(5, 1), title = "# Why isn't this a good strategy?")`
 
 ```{r intermed, include = FALSE}
 ds <- starwars
@@ -405,6 +413,10 @@ iris %>% clean_names("title") #ROTATE
 ```
 
 ---
+class: center, middle
+# What are the advantages/disadvantages of using a function to automatically rename your variables?
+
+---
 # Mutate and summarize
 
 - Mutate adds/modifies columns; dataset remains the same size
@@ -459,13 +471,6 @@ ds %>% summarize(min_height = min(height, na.rm = T))
 ds %>% summarize(min_height = min(height, na.rm = T),
                  m_height = mean(height, na.rm = T),
                  max_height = max(height, na.rm = T))
-
-ds %>% group_by(species, sex) %>% 
-  summarize(min_height = min(height, na.rm = T),
-                 m_height = mean(height, na.rm = T),
-                 max_height = max(height, na.rm = T),
-                 n = n()) %>% 
-  filter(n > 1)
 ```
 
 ---
