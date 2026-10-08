@@ -361,7 +361,7 @@ ds <- ds %>%
 ---
 # Assigning the result of a piped expression
 
-All the options below are equivalent, but I stick with `ds <- ds %>%` because it's the most common to see
+All the options below are equivalent, but I stick with `ds <- ds %>%` because it's the most common
 
 ```{r, eval = F}
 ds <- ds %>% select(height) %>% slice_tail(n = 5)
@@ -372,6 +372,8 @@ ds <- select(ds, height) %>% slice_tail(n = 5)
 
 ds <- slice_tail(select(ds, height), n = 5)
 ```
+
+Learn your [keyboard shortcuts](https://2026-psyc-259.github.io/course_site/resources/Shortcuts.html) to save time
 
 ---
 # Rename

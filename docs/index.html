@@ -1410,8 +1410,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Leia Org…    150    49 brown      light      brown             19 fema… femin…
-2 Barriss …    166    50 black      yellow     blue              40 fema… femin…
+1 Palpatine    170    75 grey       pale       yellow            82 male  mascu…
+2 Mace Win…    188    84 none       dark       brown             72 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -1434,8 +1434,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Darth Ma…    175    80 none       red        yellow            54 male  mascu…
-2 Poe Dame…     NA    NA brown      light      brown             NA male  mascu…
+1 Leia Org…    150    49 brown      light      brown             19 fema… femin…
+2 Han Solo     180    80 brown      fair       brown             29 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -2635,7 +2635,7 @@ ds
 ---
 # Assigning the result of a piped expression
 
-All the options below are equivalent, but I stick with `ds &lt;- ds %&gt;%` because it's the most common to see
+All the options below are equivalent, but I stick with `ds &lt;- ds %&gt;%` because it's the most common
 
 
 ``` r
@@ -2647,6 +2647,8 @@ ds &lt;- select(ds, height) %&gt;% slice_tail(n = 5)
 
 ds &lt;- slice_tail(select(ds, height), n = 5)
 ```
+
+Learn your [keyboard shortcuts](https://2026-psyc-259.github.io/course_site/resources/Shortcuts.html) to save time
 
 ---
 # Rename
