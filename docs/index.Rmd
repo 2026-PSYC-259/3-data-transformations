@@ -16,6 +16,7 @@ output:
 ---
 ```{r xaringanExtra, echo=FALSE}
 xaringanExtra::use_xaringan_extra(c("tile_view","broadcast"))
+#xaringan::decktape("docs/index.html", "slides.pdf")
 ```
 
 ```{r xaringanExtra-clipboard, echo=FALSE}
