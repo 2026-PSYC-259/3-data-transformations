@@ -4,7 +4,7 @@
     <title>R Data Types and Transformations with dplyr</title>
     <meta charset="utf-8" />
     <meta name="author" content="John Franchak &amp; Holly O’Rourke" />
-    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.31/header-attrs.js"></script>
     <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
     <script src="libs/tile-view-0.2.6/tile-view.js"></script>
     <script src="libs/js-cookie-3.0.0/js.cookie.js"></script>
@@ -72,7 +72,7 @@ class: center, middle
 
 &lt;br /&gt;
 
-.footnote[.small[.bold[Last updated: 2026-10-08]]]
+.footnote[.small[.bold[Last updated: 2026-10-26]]]
 
 ---
 class: inverse, center, middle
@@ -1410,8 +1410,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Palpatine    170    75 grey       pale       yellow            82 male  mascu…
-2 Mace Win…    188    84 none       dark       brown             72 male  mascu…
+1 Obi-Wan …    182    77 auburn, w… fair       blue-gray         57 male  mascu…
+2 Quarsh P…    183    NA black      dark       brown             62 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -1434,8 +1434,8 @@ count: false
 # A tibble: 2 × 14
   name      height  mass hair_color skin_color eye_color birth_year sex   gender
   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Leia Org…    150    49 brown      light      brown             19 fema… femin…
-2 Han Solo     180    80 brown      fair       brown             29 male  mascu…
+1 Arvel Cr…     NA    NA brown      fair       brown             NA male  mascu…
+2 Wedge An…    170    77 brown      fair       hazel             21 male  mascu…
 # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
@@ -5194,7 +5194,7 @@ code.r.hljs.remark-code{
 }
 
 .remark-slide-number {
-  opacity: 0; /* default: 0.5 */
+  opacity: 1; /* default: 0.5 */
 }
 
 .content-box { 

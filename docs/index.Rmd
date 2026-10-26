@@ -631,7 +631,7 @@ code.r.hljs.remark-code{
 }
 
 .remark-slide-number {
-  opacity: 0; /* default: 0.5 */
+  opacity: 1; /* default: 0.5 */
 }
 
 .content-box { 
